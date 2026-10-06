@@ -1,0 +1,20 @@
+openapi: 3.0.3
+info:
+  title: CoupleApp API
+  version: 0.1.0
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API process is available; does not check external dependencies.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]

@@ -1,0 +1,8 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #4a2935; background: #fff7f2; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 900px; margin: 0 auto; padding: clamp(48px, 12vw, 160px) 28px; }
+.eyebrow { letter-spacing: .22em; font-size: .8rem; font-weight: 700; }
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.12; letter-spacing: -.035em; }
+p { font-size: 1.15rem; line-height: 1.7; }
+.badge { display: inline-block; margin-top: 24px; padding: 12px 18px; border: 1px solid #dbb9c4; border-radius: 30px; }
