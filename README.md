@@ -86,3 +86,13 @@ Kiểm tra build bằng `npm run build`, TypeScript bằng `npm run typecheck`. 
 ## Công việc kế tiếp
 
 Tích hợp Firebase Anonymous native → shared auth contract → Go xác minh ID token. Giữ UID khi mở lại; sau đó thêm profile/bộ đếm bền vững và màn admin có quyền. Không dùng UID tự nhập hoặc mock token làm xác thực production.
+
+## Research và kế hoạch
+
+Tài liệu ghi lại nghiên cứu và quyết định tại thời điểm lập kế hoạch; tính năng đề xuất không đồng nghĩa đã triển khai. Trạng thái source thực tế nằm trong [báo cáo khởi tạo](docs/bootstrap-status.md).
+
+- [Tính năng, luồng người dùng, log và analytics](docs/couple-app-product-operations-notes.md)
+- [Kế hoạch phát triển](docs/couple-app-development-plan.md)
+- [Research Clean Architecture theo nền tảng](docs/couple-app-clean-architecture.md)
+- [Research và đề xuất thư viện](docs/couple-app-library-recommendations.md)
+- [Kế hoạch sprint 01](docs/couple-app-sprint-01.md)

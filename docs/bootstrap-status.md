@@ -2,7 +2,7 @@
 
 ## Đã tạo
 
-- Git repository local, nhánh `main`, chưa commit hoặc đẩy remote.
+- Git repository nhánh `main`; source khởi đầu đã push lên `thuctv2000/couple-app` tại commit `073b2bb` ngày 06/10/2026. Tài liệu research và kế hoạch được bổ sung vào repo ngày 07/10/2026.
 - Monorepo `mobile`, `backend`, `web`, `contracts`, `firebase`, `docs`.
 - KMP feature `lovecounter` và shared facade; hai UI riêng gọi cùng facade.
 - 9 ca test: ngày đầu, năm nhuận, đổi năm, ngày tương lai, múi giờ, DST, chuỗi ngày sai, ngày nhuận không hợp lệ, múi giờ sai.
