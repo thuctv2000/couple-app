@@ -8,14 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		2C7A29BC665D212923A1882D /* LoveCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544305DAD0C2C8FB920BC69 /* LoveCounterView.swift */; };
+		475029EC23EBAFC3B66E6FE7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8FA6E25333F8F705E884F162 /* FirebaseAuth */; };
 		69B9E988B04A781FBA15FA44 /* CoupleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7290CADA3D97627899E7C0 /* CoupleApp.swift */; };
+		6A0ACD12D5F724765EAA2101 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 679292BF0F92AC40254E37D6 /* FirebaseCore */; };
+		85D71E1AE7581DE4F6BD570C /* FirebaseCounterIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AAD836BE7F02E97E6B44F1 /* FirebaseCounterIdentity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		33AAD836BE7F02E97E6B44F1 /* FirebaseCounterIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseCounterIdentity.swift; sourceTree = "<group>"; };
 		5D7290CADA3D97627899E7C0 /* CoupleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoupleApp.swift; sourceTree = "<group>"; };
 		6103859CF1762C11A3775B99 /* CoupleApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CoupleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7544305DAD0C2C8FB920BC69 /* LoveCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoveCounterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4BD8536AC5E8AA837718BC8B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				475029EC23EBAFC3B66E6FE7 /* FirebaseAuth in Frameworks */,
+				6A0ACD12D5F724765EAA2101 /* FirebaseCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		005E6126DCCF3E1EF39239BB = {
@@ -38,6 +54,7 @@
 		612B28497AA517DE75921645 /* LoveCounter */ = {
 			isa = PBXGroup;
 			children = (
+				33AAD836BE7F02E97E6B44F1 /* FirebaseCounterIdentity.swift */,
 				7544305DAD0C2C8FB920BC69 /* LoveCounterView.swift */,
 			);
 			path = LoveCounter;
@@ -68,6 +85,7 @@
 			buildPhases = (
 				D937F618C424587F48AE1CE9 /* Build shared Kotlin framework */,
 				72D1831F4239A26A36CD79F6 /* Sources */,
+				4BD8536AC5E8AA837718BC8B /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -75,6 +93,8 @@
 			);
 			name = CoupleApp;
 			packageProductDependencies = (
+				8FA6E25333F8F705E884F162 /* FirebaseAuth */,
+				679292BF0F92AC40254E37D6 /* FirebaseCore */,
 			);
 			productName = CoupleApp;
 			productReference = 6103859CF1762C11A3775B99 /* CoupleApp.app */;
@@ -100,6 +120,9 @@
 			);
 			mainGroup = 005E6126DCCF3E1EF39239BB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 98BEFEC3E215B1CBAF0291EF /* Products */;
 			projectDirPath = "";
@@ -138,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				69B9E988B04A781FBA15FA44 /* CoupleApp.swift in Sources */,
+				85D71E1AE7581DE4F6BD570C /* FirebaseCounterIdentity.swift in Sources */,
 				2C7A29BC665D212923A1882D /* LoveCounterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,6 +234,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -294,6 +319,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Config/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -328,6 +354,30 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 12.19.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		679292BF0F92AC40254E37D6 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		8FA6E25333F8F705E884F162 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2BC128090FEB96A1560358FF /* Project object */;
 }

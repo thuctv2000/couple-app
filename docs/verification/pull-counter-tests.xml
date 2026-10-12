@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="PullCounterTest[jvm]" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-11T14:29:01.927Z" hostname="AntKings-Mac-mini.local" time="0.054">
+  <properties/>
+  <testcase name="restoresIntoEmptyStoreAndReopenPreservesCursorWithoutOutbox[jvm]" classname="dev.coupleapp.lovecounter.data.local.PullCounterTest" time="0.012"/>
+  <testcase name="editDuringNetworkReadRemainsQueuedAtOldBaseVersion[jvm]" classname="dev.coupleapp.lovecounter.data.local.PullCounterTest" time="0.009"/>
+  <testcase name="accountChangeOrMissingServerDoesNotEraseLocalData[jvm]" classname="dev.coupleapp.lovecounter.data.local.PullCounterTest" time="0.01"/>
+  <testcase name="unauthorizedRefreshIsBoundedAndStoredConflictIsPreserved[jvm]" classname="dev.coupleapp.lovecounter.data.local.PullCounterTest" time="0.013"/>
+  <testcase name="newerSnapshotUpdatesCleanStoreButOlderAndSameVersionDifferentPayloadAreRejected[jvm]" classname="dev.coupleapp.lovecounter.data.local.PullCounterTest" time="0.008"/>
+  <testcase name="noIdentityDoesNotCreateAnonymousOrReadNetwork[jvm]" classname="dev.coupleapp.lovecounter.data.local.PullCounterTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

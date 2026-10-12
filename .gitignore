@@ -19,4 +19,5 @@
 **/*.jks
 **/*.p8
 .firebase/
+/work/
 *-debug.log

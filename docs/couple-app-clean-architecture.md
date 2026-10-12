@@ -1,5 +1,7 @@
 # Couple App — Clean Architecture theo feature cho KMP, Go và Next.js
 
+> Quyết định 07/10/2026: **offline-first**, dùng và lưu dữ liệu cá nhân bền vững ngay lần mở đầu không có mạng. [Đặc tả offline-first](couple-app-offline-first.md) thay thế mô tả chỉ giữ draft hoặc trì hoãn offline bên dưới. Cloud sync và auth không chặn luồng local; đây là quyết định, chưa phải code đã có.
+
 - Ngày nghiên cứu: 28/09/2026.
 - Cập nhật thư viện: 01/10/2026 — [Danh mục và điều kiện áp dụng](couple-app-library-recommendations.md).
 - Quyết định ngày 02/10/2026: Firebase, KMP mới nhất và UI riêng Android/iOS. Triển khai đề xuất: Kotlin/KMP stable 2.4.20; Android Jetpack Compose + Navigation 3 stable 1.2.0; iOS SwiftUI + NavigationStack. “Mới nhất” được hiểu là stable, kiểm tra lại khi scaffold. [Kotlin releases](https://kotlinlang.org/docs/releases.html) · [Navigation 3 releases](https://developer.android.com/jetpack/androidx/releases/navigation3) · [Apple NavigationStack](https://developer.apple.com/documentation/swiftui/navigationstack)
@@ -392,9 +394,9 @@ Không cần cây feature giống hệt giữa ba dự án. Mobile và admin có
 ## 8. Flow mẫu: Anonymous → liên kết Google/Apple
 
 1. App host/composition khởi tạo IdentityGateway nền tảng.
-2. `EnsureSession` qua `AuthRepository` khôi phục phiên hoặc tạo Anonymous.
+2. Mở local space/database trước để dùng ngay; `EnsureSession` qua `AuthRepository` khôi phục phiên hoặc tạo Anonymous khi có mạng, không chặn UI local.
 3. Data adapter chuyển Firebase user thành `AuthSession` của domain.
-4. Network lấy ID token qua port và gọi Go để đồng bộ profile.
+4. Sync lấy ID token qua port, gửi outbox đúng account scope tới Go; response cập nhật database, UI đọc từ local.
 5. Người dùng bấm liên kết; presentation đề nghị host mở Google/Apple, nhận kết quả qua gateway.
 6. Link provider vào phiên hiện tại; thành công đồng bộ cùng UID, hủy thì giữ phiên cũ.
 7. Credential đã thuộc tài khoản khác trả `AuthFailure.AccountConflict`; UI đưa lựa chọn rõ ràng, không tự đổi phiên/xóa dữ liệu.

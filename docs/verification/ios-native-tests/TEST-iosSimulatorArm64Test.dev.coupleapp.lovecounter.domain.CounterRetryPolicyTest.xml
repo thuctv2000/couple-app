@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="iosSimulatorArm64Test.dev.coupleapp.lovecounter.domain.CounterRetryPolicyTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-12T02:05:11.434Z" hostname="AntKings-Mac-mini.local" time="0.0">
+  <properties/>
+  <testcase name="transientBackoffIsBoundedAndStops[iosSimulatorArm64]" classname="iosSimulatorArm64Test.dev.coupleapp.lovecounter.domain.CounterRetryPolicyTest" time="0.0"/>
+  <testcase name="permanentErrorsAndSuccessDoNotRetry[iosSimulatorArm64]" classname="iosSimulatorArm64Test.dev.coupleapp.lovecounter.domain.CounterRetryPolicyTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

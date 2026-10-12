@@ -5,14 +5,15 @@ Monorepo khởi đầu: logic KMP dùng chung, UI Android Compose và iOS SwiftU
 ## Phạm vi hiện tại
 
 - Feature đầu tiên: đếm ngày lịch, ngày bắt đầu tính là ngày 1; từ chối ngày tương lai.
-- Android và iOS gọi cùng `LoveCounterFacade`; logic nằm trong `feature/lovecounter/domain`.
-- Go có `/healthz`; Next.js có trang giới thiệu tối thiểu.
-- Chưa tích hợp Firebase, persistence, liên kết tài khoản, admin hoặc triển khai cloud. Màn hình mobile ghi rõ đây là bản thử chưa lưu dữ liệu.
+- Android và iOS quan sát `CounterSession`; logic nằm trong `feature/lovecounter/domain`, dữ liệu local qua repository của feature.
+- Go có `/healthz`, GET/PUT `/v1/me/counter`, admin session gate và metadata support endpoint có audit. Next.js có landing, trợ giúp, trang thông tin dữ liệu và admin read-only được bảo vệ.
+- Đã thêm Room KMP: lưu bộ đếm và outbox cùng transaction, đọc lại khi mở app. Android đã kiểm chứng lưu offline, sync Anonymous, pull, hai lựa chọn conflict và chặn editor cũ ghi đè dữ liệu mới. APK và framework KMP iOS build thành công; app SwiftUI đã build/cài/khởi động trên iOS Simulator; 17 native tests qua, gồm Room persistence. Thao tác UI và sync iOS end-to-end chưa kiểm chứng. Xem [bằng chứng triển khai](docs/phase-01-progress.md).
+- Android debug đã kiểm chứng Firebase Anonymous và gửi outbox tới Go/Firestore Emulator, gồm sửa offline rồi mở lại có mạng. Mặc định chưa cấu hình vẫn local-only; iOS Auth end-to-end, liên kết Google/Apple và cloud thật chưa hoàn tất. Admin session/metadata/audit đã kiểm chứng bằng emulator, còn thiếu popup Google với cấu hình project hiện có. Xem [cách bật kiểm thử local](firebase/README.md).
 - `CoupleApp`, `dev.coupleapp.local` và Go module `example.com/coupleapp/backend` là định danh local tạm thời. Chốt định danh thật trước khi đăng ký Firebase/OAuth/signing.
 
 Kết quả kiểm chứng thực tế được ghi trong [Báo cáo khởi tạo](docs/bootstrap-status.md). Cấu hình build không đồng nghĩa đã chạy thành công trên thiết bị.
 
-Đã kiểm chứng: 9 KMP JVM tests, Android APK, Go build/health, Next production build và framework KMP iOS. Build ứng dụng SwiftUI còn bị chặn tại macro của Apple trong sandbox; xem báo cáo để chạy lại trên máy phát triển. Chưa kiểm thử UI trên thiết bị/emulator.
+Kết quả mới nhất: 41 feature + 12 shared JVM tests đã qua; Android APK và framework KMP iOS build qua. Go có kiểm thử tích hợp Auth/Firestore Emulator. Next.js typecheck/build và kiểm tra browser desktop/mobile đã qua. Các kết quả và giới hạn mới nhất nằm trong [tiến độ phase 01](docs/phase-01-progress.md); bằng chứng startup iOS được ghi riêng với 17 native tests; chưa đồng nghĩa toàn bộ UI/auth iOS đã nghiệm thu.
 
 ## Cấu trúc
 
@@ -25,7 +26,7 @@ mobile/
 backend/
   cmd/api/                     # Composition/entry point
   internal/platform/httpapi/   # HTTP adapter
-web/src/app/                   # Next.js App Router; chưa có admin
+web/src/app/                   # Next.js App Router; landing và admin read-only
 contracts/openapi.yaml         # API thực sự đã có
 firebase/                     # Hướng dẫn cấu hình giai đoạn tiếp theo
 docs/                         # Quy tắc kiến trúc và kết quả kiểm chứng
@@ -71,7 +72,7 @@ go test ./...
 go vet ./...
 ```
 
-Backend chưa có nghiệp vụ nên chưa có unit test; kiểm tra health HTTP nằm trong bước smoke check. Thêm chi và Firebase Admin khi triển khai route auth/profile thay vì cài toàn bộ thư viện ngay từ scaffold.
+Backend có unit tests cho version/idempotency và HTTP boundaries. Test tích hợp chỉ chạy khi cấu hình cả Auth/Firestore Emulator local; nếu không chúng được skip. Xem [cách chạy emulator](firebase/README.md) và [hợp đồng sync](docs/counter-sync-contract.md). Không có `FIREBASE_PROJECT_ID` thì route bộ đếm trả 503, health vẫn hoạt động.
 
 ## Web
 
@@ -81,11 +82,11 @@ npm ci
 npm run dev
 ```
 
-Kiểm tra build bằng `npm run build`, TypeScript bằng `npm run typecheck`. Dùng lockfile trong repo để tái lập dependency. Trang landing không tự tạo Anonymous user; route admin chưa tồn tại.
+Kiểm tra build bằng `npm run build`, TypeScript bằng `npm run typecheck`. Dùng lockfile trong repo để tái lập dependency. Trang landing không tự tạo Anonymous user. Admin fail-closed khi thiếu cấu hình và không tự tạo Firebase project.
 
 ## Công việc kế tiếp
 
-Tích hợp Firebase Anonymous native → shared auth contract → Go xác minh ID token. Giữ UID khi mở lại; sau đó thêm profile/bộ đếm bền vững và màn admin có quyền. Không dùng UID tự nhập hoặc mock token làm xác thực production.
+Theo quyết định offline-first: database local → bộ đếm lưu/mở lại khi mất mạng → Firebase Anonymous khi online → hàng đợi đồng bộ qua Go. Sau đó hoàn thiện provider linking và màn admin có quyền. Không dùng UID tự nhập hoặc mock token làm xác thực production.
 
 ## Research và kế hoạch
 
@@ -96,3 +97,11 @@ Tài liệu ghi lại nghiên cứu và quyết định tại thời điểm l�
 - [Research Clean Architecture theo nền tảng](docs/couple-app-clean-architecture.md)
 - [Research và đề xuất thư viện](docs/couple-app-library-recommendations.md)
 - [Kế hoạch sprint 01](docs/couple-app-sprint-01.md)
+
+- [Research thành phần nền, UX và giữ chân người dùng](docs/couple-app-ux-retention-research.md)
+
+- [Quyết định offline-first và hợp đồng đồng bộ đề xuất](docs/couple-app-offline-first.md)
+
+## Kế hoạch triển khai hiện hành
+
+[Phase 01: 6 màn native + offline-first + auth/sync + web tối thiểu](docs/couple-app-phase-01-implementation-plan.md) — 8 tuần cơ sở (320 giờ, gồm dự phòng), một người 40 giờ/tuần. Demo offline mục tiêu tuần 3; beta cloud mục tiêu tuần 8. Đây là ước lượng mới, thay lịch sprint 80 giờ trước yêu cầu offline-first.

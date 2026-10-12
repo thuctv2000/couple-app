@@ -1,15 +1,19 @@
 # Couple App — Checklist khởi động và sprint 01
 
+> Kế hoạch triển khai hiện hành ngày 09/10/2026: [Phase 01 — 8 tuần cơ sở, 320 giờ](couple-app-phase-01-implementation-plan.md). Dùng kế hoạch mới cho phase nền móng; các lịch cũ bên dưới chỉ còn giá trị lịch sử/roadmap, không cộng dồn thời lượng.
+
+> Quyết định 07/10/2026: **offline-first**, dùng và lưu dữ liệu cá nhân bền vững ngay lần mở đầu không có mạng. [Đặc tả offline-first](couple-app-offline-first.md) thay thế mô tả chỉ giữ draft hoặc trì hoãn offline bên dưới. Cloud sync và auth không chặn luồng local; đây là quyết định, chưa phải code đã có.
+
 - Cập nhật: 02/10/2026.
 - Nguồn lực: một người, AI hỗ trợ, 40 giờ/tuần.
-- Timebox: 2 tuần, 80 giờ gồm 66 giờ công việc và 14 giờ dự phòng tích hợp/sửa lỗi.
+- Timebox ban đầu: 2 tuần, 80 giờ gồm 66 giờ công việc và 14 giờ dự phòng. Phạm vi offline-first ngày 07/10 cần ước lượng lại; bảng giờ cũ chưa phản ánh phần mở rộng.
 - Trạng thái cập nhật 05/10/2026: đã bắt đầu dựng [source local](../README.md), feature đếm ngày và hai UI native. Kết quả kiểm chứng tại [báo cáo khởi tạo](bootstrap-status.md); chưa cấu hình Firebase thật.
 - Theo quyết định mới: Firebase; KMP chia sẻ logic/data; Android Compose + Navigation 3; iOS SwiftUI + NavigationStack; Go backend; Next.js landing/admin; Clean Architecture theo feature.
 - Liên quan: [Kiến trúc](couple-app-clean-architecture.md), [Thư viện](couple-app-library-recommendations.md), [Lộ trình](couple-app-development-plan.md), [Danh mục tính năng](couple-app-product-operations-notes.md).
 
 ## 1. Mục tiêu demo cuối sprint
 
-Trên Android và iOS, người dùng mở app → dùng Anonymous → đặt tên hiển thị và ngày bắt đầu yêu → xem bộ đếm → đóng/mở app → vẫn thấy đúng dữ liệu. Go xác minh phiên và lưu dữ liệu; web quản trị chỉ cho người có quyền xem metadata tài khoản tối thiểu.
+Trên Android và iOS, người dùng mở app không có mạng → đặt ngày bắt đầu yêu → lưu local → xem bộ đếm → đóng/mở app → vẫn thấy đúng dữ liệu. Khi có mạng mới tạo/khôi phục Anonymous và đồng bộ qua Go có kiểm quyền; web quản trị chỉ cho người có quyền xem metadata tài khoản tối thiểu.
 
 Google/Apple vẫn là yêu cầu của v1. Sprint này kiểm chứng một đường link thực tế sớm, ghi kết quả và việc còn thiếu; sprint kế tiếp hoàn thiện ma trận hai provider trên hai nền tảng, xung đột và vòng đời tài khoản. Demo sprint 01 không đồng nghĩa auth đã sẵn sàng phát hành.
 
@@ -46,7 +50,7 @@ Các mặc định dưới đây là đề xuất triển khai có thể chỉnh
 | Ngày tương lai | Chưa hỗ trợ trong bộ đếm ngày yêu; báo lỗi rõ tại UI và API | UI/API đều từ chối, không hiển thị số âm |
 | Chưa ghép đôi | Bộ đếm là dữ liệu cá nhân của user | Không tạo partner giả; chưa suy ra đã có quan hệ với tài khoản khác |
 | Phiên có sẵn | Khôi phục, không tạo anonymous UID mới khi mở lại | Reopen giữ UID; không có profile trùng |
-| Lần đầu offline | Cho nhập draft cục bộ, hiển thị chưa đồng bộ | Có mạng mới tạo/khôi phục phiên và lưu lên đúng tài khoản |
+| Lần đầu offline | Lưu bền vững local, dùng đầy đủ bộ đếm và mở lại được, hiển thị chưa đồng bộ | Có mạng mới tạo/khôi phục phiên và lưu lên đúng tài khoản |
 | Lưu thất bại | Giữ draft, có thao tác thử lại | Không giả báo đã lưu trên server |
 | Chuyển tài khoản | Draft gắn với phiên/chủ sở hữu rõ ràng; không tự chuyển sang user mới | Nếu draft chưa có chủ, hỏi lựa chọn gắn dữ liệu trước khi đồng bộ vào tài khoản đã có |
 | Admin | Chỉ metadata phục vụ hỗ trợ: UID, trạng thái tài khoản, thời gian tạo/cập nhật | Không hiển thị ngày yêu, nội dung riêng hoặc token trên màn admin đầu tiên |
@@ -93,7 +97,7 @@ Lịch định hướng: tuần 1 làm 01–04 và bắt đầu Android/iOS; tu�
 
 Đến bước lưu hồ sơ và ngày yêu, **đề xuất Firestore cho thử nghiệm đầu tiên**, đúng ưu tiên Firebase. Chưa coi đây là quyết định cuối cho mọi query mạng xã hội. Backend truy cập qua repository adapter để có thể đánh giá lại theo nhu cầu feed/search sau này.
 
-Luồng dữ liệu: mobile → Go API → Firestore; mobile gọi Firebase Auth trực tiếp để quản lý phiên. Với collection nghiệp vụ do Go quản lý, client không được đọc/ghi trực tiếp. SDK server Firestore không chịu Security Rules như client SDK, nên Go phải kiểm tra quyền và cấu hình IAM phù hợp. [Firebase: server access và rules](https://firebase.google.com/docs/firestore/security/rules-conditions)
+Luồng dữ liệu: UI → repository → local database/outbox ↔ Go API ↔ Firestore; mobile gọi Firebase Auth trực tiếp để quản lý phiên. Với collection nghiệp vụ do Go quản lý, client không được đọc/ghi trực tiếp. SDK server Firestore không chịu Security Rules như client SDK, nên Go phải kiểm tra quyền và cấu hình IAM phù hợp. [Firebase: server access và rules](https://firebase.google.com/docs/firestore/security/rules-conditions)
 
 Hợp đồng dưới đây là bản nháp để chuyển thành OpenAPI ở S01-04, chưa phải endpoint đã tồn tại:
 
@@ -143,7 +147,7 @@ Chỉ thay trạng thái khi có test thực tế; kèm build/device/môi trư�
 
 Sprint 02 ưu tiên Google/Apple trên cả hai nền tảng, đăng nhập tài khoản cũ, conflict UI, reauthentication/xóa tài khoản và dọn cache theo phiên. Ước lượng sau kết quả S01-07, không mặc định mọi phần này vừa một tuần.
 
-Sau khi auth đạt yêu cầu mới làm couple/invite/permission matrix; tiếp đến kỷ niệm, ảnh, offline; social và AI theo roadmap. Các nhóm này vẫn nằm trong danh mục sản phẩm; việc chưa đưa vào sprint 01 không xóa tính năng khỏi v1.
+Sau khi auth đạt yêu cầu mới làm couple/invite/permission matrix; tiếp đến kỷ niệm và ảnh; offline-first đã là nền từ bước lưu bộ đếm; social và AI theo roadmap. Các nhóm này vẫn nằm trong danh mục sản phẩm; việc chưa đưa vào sprint 01 không xóa tính năng khỏi v1.
 
 Lịch đầy đủ trước đây 36–44 tuần dựa trên UI chung. Cuối sprint, ghi thời gian Android UI, iOS UI, bridge, shared, backend, admin và QA riêng; dùng số liệu đó ước lượng lại roadmap. Chưa đưa ra lịch mới chỉ bằng cách cộng một tỷ lệ tùy ý.
 

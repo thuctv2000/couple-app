@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="iosSimulatorArm64Test.dev.coupleapp.lovecounter.data.local.NativeCounterPersistenceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-12T02:05:11.435Z" hostname="AntKings-Mac-mini.local" time="0.0">
+  <properties/>
+  <testcase name="nativeRoomReopensImmutableOutboxAndAcceptsServerSnapshot[iosSimulatorArm64]" classname="iosSimulatorArm64Test.dev.coupleapp.lovecounter.data.local.NativeCounterPersistenceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

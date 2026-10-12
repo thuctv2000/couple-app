@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CounterSyncQueueTest[jvm]" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-10T16:01:01.300Z" hostname="AntKings-Mac-mini.local" time="0.451">
+  <properties/>
+  <testcase name="accountMismatchAndMalformedAckLeaveQueueUntouched[jvm]" classname="dev.coupleapp.lovecounter.data.local.CounterSyncQueueTest" time="0.417"/>
+  <testcase name="migrationFromV1PreservesLocalDataAndUnsentQueue[jvm]" classname="dev.coupleapp.lovecounter.data.local.CounterSyncQueueTest" time="0.012"/>
+  <testcase name="ackPreservesLaterEditAndNextOperationUsesNewVersion[jvm]" classname="dev.coupleapp.lovecounter.data.local.CounterSyncQueueTest" time="0.021"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

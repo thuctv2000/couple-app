@@ -1,0 +1,12 @@
+=== RUN   TestNextAdminSessionAgainstFirebaseEmulator
+--- PASS: TestNextAdminSessionAgainstFirebaseEmulator (1.15s)
+PASS
+ok  	example.com/coupleapp/backend/internal/integration	3.015s
+Latest verification: 2026-10-12
+The same local-only test now also covers `/api/admin/lookup`: streamed 1024-byte limit, cross-origin rejection, successful minimal metadata response, Firestore audit event, and denial after the admin claim is removed while reusing the same HttpOnly cookie.
+
+Latest result:
+=== RUN   TestNextAdminSessionAgainstFirebaseEmulator
+--- PASS: TestNextAdminSessionAgainstFirebaseEmulator (1.20s)
+PASS
+ok  example.com/coupleapp/backend/internal/integration  3.086s

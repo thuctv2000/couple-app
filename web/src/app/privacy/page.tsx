@@ -1,0 +1,14 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+export const metadata: Metadata = { title: "Dữ liệu & quyền riêng tư" };
+
+export default function PrivacyPage() {
+  return <main id="main-content" className="document-page"><header className="document-header"><p className="eyebrow">RÕ RÀNG TỪ ĐẦU</p><h1>Dữ liệu<br /><em>của bạn.</em></h1><p>Thông tin về bản đang phát triển · Cập nhật 12/10/2026</p></header><div className="notice"><p>Đây là mô tả hành vi hiện tại của bản thử nghiệm, chưa phải chính sách quyền riêng tư hoàn chỉnh cho bản phát hành. Đơn vị vận hành, kênh liên hệ và thời hạn lưu dữ liệu cần được công bố trước khi mở thử nghiệm cho người dùng.</p></div><article className="prose">
+    <h2>Thông tin lưu trên thiết bị</h2><p>App lưu tên hiển thị, tên người ấy nếu bạn nhập, ngày bắt đầu và múi giờ để tính số ngày bên nhau. App cũng lưu các thay đổi chờ gửi và thông tin cần thiết để nhận biết phiên bản đồng bộ.</p><p>Nhập tên người ấy không tạo tài khoản cho người đó. Bản hiện tại chưa có ghép đôi hay chia sẻ công khai.</p>
+    <h2>Khi bật đồng bộ thử nghiệm</h2><p>Thông tin bộ đếm được gửi cùng phiên xác thực đến máy chủ thử nghiệm. Firebase Authentication quản lý phiên khách; dữ liệu bộ đếm được lưu qua backend vào Firestore. Cấu hình phát triển hiện dùng dịch vụ giả lập trên máy phát triển, chưa phải môi trường cloud công khai.</p><p>App không tự chọn một bản để ghi đè khi phát hiện xung đột. Bạn được xem và chọn thông tin muốn giữ. Token xác thực không được lưu vào danh sách thay đổi chờ gửi.</p>
+    <h2>Trang web này</h2><p>Các trang giới thiệu hiện không có biểu mẫu thu email, đăng nhập người dùng hay mã phân tích truy cập. Khi được triển khai, đơn vị lưu trữ có thể có nhật ký truy cập; thông tin này cần được bổ sung theo cấu hình triển khai thực tế.</p>
+    <p>Khu vực quản trị đang được triển khai với đăng nhập Google qua Firebase. Sau khi server xác minh quyền, trình duyệt giữ cookie phiên HttpOnly tối đa 55 phút; đăng xuất xóa cookie này. Quyền quản trị được kiểm tra lại ở server và không được cấp chỉ vì đăng nhập.</p>
+    <h2>Xóa và khôi phục</h2><p>Luồng xóa tài khoản, xóa dữ liệu đồng bộ và liên kết Google/Apple chưa hoàn tất. Gỡ app có thể làm mất dữ liệu local và không đồng nghĩa dữ liệu đã đồng bộ được xóa. Chưa có cam kết khôi phục sau khi cài lại app.</p><p>Thời hạn lưu, quy trình xóa, thông tin liên hệ hỗ trợ và cấu hình đo lường phải được hoàn thiện trước khi phát hành. Bản hiện tại không cung cấp chia sẻ mạng xã hội, tải ảnh hay tư vấn AI.</p>
+    <h2>Thắc mắc thường gặp</h2><p><Link href="/help">Đọc hướng dẫn lưu offline, đồng bộ và xử lý hai bản dữ liệu.</Link></p>
+  </article></main>;
+}

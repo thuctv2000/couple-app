@@ -1,5 +1,7 @@
 # Couple App — Nghiên cứu và đề xuất thư viện
 
+> Quyết định 07/10/2026: **offline-first**, dùng và lưu dữ liệu cá nhân bền vững ngay lần mở đầu không có mạng. [Đặc tả offline-first](couple-app-offline-first.md) thay thế mô tả chỉ giữ draft hoặc trì hoãn offline bên dưới. Cloud sync và auth không chặn luồng local; đây là quyết định, chưa phải code đã có.
+
 - Ngày đối chiếu tài liệu: 01/10/2026; cập nhật quyết định UI ngày 02/10/2026.
 - Quyết định mới: UI Android/iOS riêng; KMP chỉ chia sẻ logic/data. Kotlin/KMP stable 2.4.20; Android Navigation 3 stable 1.2.0 theo tài liệu ngày 02/10. iOS dùng SwiftUI NavigationStack, API đi cùng SDK Apple. [Kotlin](https://kotlinlang.org/docs/releases.html) · [Navigation 3](https://developer.android.com/jetpack/androidx/releases/navigation3) · [NavigationStack](https://developer.apple.com/documentation/swiftui/navigationstack)
 - Phạm vi: KMP Android/iOS, Go backend, Next.js landing/admin; Clean Architecture chia theo feature.
@@ -52,7 +54,7 @@ Các mức bên dưới: **Ban đầu** = đưa vào nền móng khi có phần 
 | [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) | Theo feature: đếm ngày | Ngày bắt đầu yêu, ngày kỷ niệm, quy tắc múi giờ | Dùng `LocalDate` cho ngày lịch; chọn quy tắc tính ngày đầu là 0 hay 1 trong đặc tả sản phẩm |
 | [Coil 3](https://coil-kt.github.io/coil/) | Theo feature: ảnh | Avatar, ảnh kỷ niệm, thumbnail feed, cache ảnh | Dùng Coil ở UI Android; không dùng Coil Compose cho SwiftUI. Chọn giải pháp ảnh iOS khi làm media; cache phải xử lý đổi tài khoản/mất quyền |
 | [DataStore KMP](https://developer.android.com/kotlin/multiplatform/datastore) | Theo feature: settings | Theme, trạng thái hướng dẫn, tùy chọn hiển thị cục bộ | Không dùng như kho bí mật để tự lưu token; quyền thông báo hệ điều hành vẫn là nguồn xác thực |
-| [Room KMP](https://developer.android.com/kotlin/multiplatform/room) | Theo feature: offline | Draft kỷ niệm, dữ liệu cần xem offline, hàng đợi thay đổi nếu được thiết kế | Chỉ ở data/local; có schema/migration; không tự giải quyết sync và xung đột với server |
+| [Room KMP](https://developer.android.com/kotlin/multiplatform/room) | Nền móng offline-first | Bộ đếm, dữ liệu local bền vững và outbox từ bước persistence đầu | Chỉ ở data/local; có schema/migration; không tự giải quyết sync và xung đột với server |
 | [Kermit](https://kermit.touchlab.co/) | Theo feature: logging chung | Ghi log dùng chung, writer riêng cho Android/iOS | Một đầu mối logging, lọc dữ liệu nhạy cảm; không thay Analytics hoặc Crashlytics |
 | [GitLive Firebase Kotlin SDK](https://github.com/GitLiveApp/firebase-kotlin-sdk) | Phương án tham khảo, chưa chọn | Wrapper Firebase giúp gọi nhiều API từ common code | SDK cộng đồng; giữ sau adapter để có thể thay bằng tích hợp SDK native |
 
@@ -201,7 +203,7 @@ Các con số là ước lượng kỹ thuật cho một người, không phải
 
 Ước lượng cũ khoảng 40–68 giờ cho nền móng được lập trước khi chốt hai UI riêng. Cần đo lại bridge Swift và hai UI auth/home trước khi xác nhận thời gian; các giờ ở bảng là baseline tham khảo, chưa gồm toàn bộ UX auth và mọi ca production. Nếu iOS/auth làm phát sinh lỗi tích hợp, cập nhật ước lượng thay vì đánh dấu xong chỉ vì Android đã chạy.
 
-Ngày 1–2 nên chốt danh mục thư viện và bắt đầu bài thử rủi ro cao; không cam kết hoàn thành mọi tích hợp trong hai ngày. Sau đó thêm Datetime khi làm đếm ngày, Coil/Room khi làm kỷ niệm, Table/Query khi có màn admin phù hợp, và OTel khi triển khai backend.
+Ngày 1–2 nên chốt danh mục thư viện và bắt đầu bài thử rủi ro cao; không cam kết hoàn thành mọi tích hợp trong hai ngày. Sau đó thêm Datetime khi làm đếm ngày, Room khi làm persistence bộ đếm offline, Coil khi làm ảnh kỷ niệm, Table/Query khi có màn admin phù hợp, và OTel khi triển khai backend.
 
 ## 9. Điều kiện nhận một dependency vào source
 

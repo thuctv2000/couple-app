@@ -20,7 +20,10 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":feature:lovecounter"))
             implementation(libs.datetime)
+            implementation(libs.coroutines.core)
         }
+        androidMain.dependencies { implementation(libs.coroutines.android) }
         commonTest.dependencies { implementation(kotlin("test")) }
+        jvmTest.dependencies { implementation(libs.coroutines.test) }
     }
 }

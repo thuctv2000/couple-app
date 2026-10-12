@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="LocalCounterRepositoryTest[jvm]" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-11T14:39:11.968Z" hostname="AntKings-Mac-mini.local" time="0.042">
+  <properties/>
+  <testcase name="concurrentSavesStayInOneSpaceWithUniqueRevisions[jvm]" classname="dev.coupleapp.lovecounter.data.local.LocalCounterRepositoryTest" time="0.013"/>
+  <testcase name="invalidInputWritesNothingAndUnchangedSaveIsNoOp[jvm]" classname="dev.coupleapp.lovecounter.data.local.LocalCounterRepositoryTest" time="0.006"/>
+  <testcase name="reopenRestoresOwnerDataAndImmutableQueue[jvm]" classname="dev.coupleapp.lovecounter.data.local.LocalCounterRepositoryTest" time="0.006"/>
+  <testcase name="staleEditorAfterPullCannotReplaceNewerDataOrCreateOperation[jvm]" classname="dev.coupleapp.lovecounter.data.local.LocalCounterRepositoryTest" time="0.007"/>
+  <testcase name="concurrentEditorsAtSameRevisionAllowOnlyOneWrite[jvm]" classname="dev.coupleapp.lovecounter.data.local.LocalCounterRepositoryTest" time="0.004"/>
+  <testcase name="outboxFailureRollsBackTheCounterUpdate[jvm]" classname="dev.coupleapp.lovecounter.data.local.LocalCounterRepositoryTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

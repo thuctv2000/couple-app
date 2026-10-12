@@ -14,7 +14,11 @@ android {
         versionCode = 1
         versionName = "0.1.0"
     }
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
+    buildTypes {
+        debug { buildConfigField("boolean", "USE_FIREBASE_EMULATOR", providers.gradleProperty("couple.emulator").orElse("false").get().toBoolean().toString()) }
+        release { buildConfigField("boolean", "USE_FIREBASE_EMULATOR", "false") }
+    }
 }
 dependencies {
     implementation(project(":shared"))

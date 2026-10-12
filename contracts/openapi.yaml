@@ -18,3 +18,143 @@ paths:
                   status:
                     type: string
                     enum: [ok]
+  /v1/admin/session:
+    get:
+      operationId: verifyAdminSession
+      security: [{firebaseIdToken: []}]
+      responses:
+        '200':
+          description: Verified identity currently has boolean admin claim on its server-side Firebase user record. Response is not cacheable.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [role]
+                properties:
+                  role: {type: string, enum: [admin]}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403':
+          description: Authenticated account does not currently have admin permission.
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /v1/admin/users/{uid}/metadata:
+    get:
+      operationId: getAdminUserMetadata
+      description: Returns support metadata only. The lookup is audited and never returns email, display name, phone number, counter payload, or relationship content.
+      security: [{firebaseIdToken: []}]
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema: {type: string, minLength: 1, maxLength: 128}
+      responses:
+        '200':
+          description: Minimal account and synchronization metadata. Response is not cacheable.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/AdminUserMetadata'}
+        '400':
+          description: Invalid Firebase UID.
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403':
+          description: Authenticated account does not currently have admin permission.
+        '404':
+          description: Firebase user not found. The lookup is still audited.
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /v1/me/counter:
+    get:
+      operationId: getMyCounter
+      security: [{firebaseIdToken: []}]
+      responses:
+        '200':
+          description: Current counter for verified UID.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Counter'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404':
+          description: Counter not found.
+        '503': {$ref: '#/components/responses/Unavailable'}
+    put:
+      operationId: applyMyCounterOperation
+      security: [{firebaseIdToken: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [operationId, baseVersion, payloadVersion, payload]
+              properties:
+                operationId:
+                  type: string
+                  pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                baseVersion: {type: integer, format: int64, minimum: 0}
+                payloadVersion: {type: integer, enum: [1]}
+                payload: {$ref: '#/components/schemas/CounterPayload'}
+      responses:
+        '200':
+          description: Atomic write or replay of the original acknowledged result.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [operationId, counter, replay]
+                properties:
+                  operationId: {type: string}
+                  counter: {$ref: '#/components/schemas/Counter'}
+                  replay: {type: boolean}
+        '400':
+          description: Invalid operation, unknown fields or body over 8 KiB.
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409':
+          description: version_conflict or operation_id_reused. Preserve local data.
+        '503': {$ref: '#/components/responses/Unavailable'}
+components:
+  securitySchemes:
+    firebaseIdToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Firebase ID token
+  schemas:
+    AdminUserMetadata:
+      type: object
+      additionalProperties: false
+      required: [uid, disabled, anonymous, providers, createdAtMillis, lastLoginAtMillis, lastRefreshAtMillis, counterExists, deletionRequestStatus]
+      properties:
+        uid: {type: string}
+        disabled: {type: boolean}
+        anonymous: {type: boolean}
+        providers:
+          type: array
+          items: {type: string, enum: [google.com, apple.com, password, phone, other]}
+        createdAtMillis: {type: integer, format: int64, minimum: 0}
+        lastLoginAtMillis: {type: integer, format: int64, minimum: 0}
+        lastRefreshAtMillis: {type: integer, format: int64, minimum: 0}
+        counterExists: {type: boolean}
+        counterVersion: {type: integer, format: int64, minimum: 1}
+        deletionRequestStatus: {type: string, enum: [none, requested, processing, failed]}
+    CounterPayload:
+      type: object
+      additionalProperties: false
+      required: [startDate, timeZoneId]
+      properties:
+        displayName: {type: string, description: Trimmed; at most 80 UTF-16 code units.}
+        partnerName: {type: string, description: Trimmed; at most 80 UTF-16 code units.}
+        startDate: {type: string, format: date}
+        timeZoneId: {type: string, example: Asia/Ho_Chi_Minh}
+    Counter:
+      type: object
+      required: [version, payload]
+      properties:
+        version: {type: integer, format: int64, minimum: 1}
+        payload: {$ref: '#/components/schemas/CounterPayload'}
+  responses:
+    Unauthorized:
+      description: Missing, invalid, expired or revoked Firebase ID token.
+    Forbidden:
+      description: Owner scope denied.
+    Unavailable:
+      description: Firebase unconfigured or backend storage unavailable; safe to retry later.

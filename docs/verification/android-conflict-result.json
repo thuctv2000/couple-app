@@ -1,0 +1,15 @@
+{
+  "environment": "local Firebase Emulator + Go + Android emulator",
+  "date": "2026-10-11",
+  "serverChoice": {
+    "serverVersion": 3,
+    "localNameAfterReopen": "Server Mai",
+    "pendingCount": 0
+  },
+  "localChoice": {
+    "serverVersionAfterAck": 5,
+    "serverName": "Server MaiLocal",
+    "pendingCount": 0
+  },
+  "cloudProjectCreated": false
+}

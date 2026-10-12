@@ -1,9 +1,13 @@
 # Couple App — Tính năng, luồng người dùng, analytics và vận hành
 
+> Quyết định 07/10/2026: **offline-first**, dùng và lưu dữ liệu cá nhân bền vững ngay lần mở đầu không có mạng. [Đặc tả offline-first](couple-app-offline-first.md) thay thế mô tả chỉ giữ draft hoặc trì hoãn offline bên dưới. Cloud sync và auth không chặn luồng local; đây là quyết định, chưa phải code đã có.
+
 - Ngày cập nhật: 28/09/2026.
 - Trạng thái: tài liệu nghiên cứu và định hướng; chưa phải đặc tả triển khai cuối cùng.
 - Phạm vi: tổng hợp danh sách tính năng, nghiên cứu sản phẩm tham khảo, phạm vi MVP, luồng sử dụng, log, analytics, AI và các thành phần vận hành.
 - Nguồn: trao đổi sản phẩm và nghiên cứu tài liệu chính thức trong cuộc trò chuyện.
+
+Bổ sung ngày 07/10/2026: [Research 40 hạng mục UX, thành phần nền và giữ chân người dùng](couple-app-ux-retention-research.md). Tài liệu bổ sung tiêu chí trải nghiệm cho các feature hiện có; không tự thay đổi phạm vi sprint.
 
 ## 1. Bối cảnh sản phẩm
 

@@ -1,5 +1,9 @@
 # Kế hoạch phát triển Couple App — KMP + Go + Next.js
 
+> Kế hoạch triển khai hiện hành ngày 09/10/2026: [Phase 01 — 8 tuần cơ sở, 320 giờ](couple-app-phase-01-implementation-plan.md). Dùng kế hoạch mới cho phase nền móng; các lịch cũ bên dưới chỉ còn giá trị lịch sử/roadmap, không cộng dồn thời lượng.
+
+> Quyết định 07/10/2026: **offline-first**, dùng và lưu dữ liệu cá nhân bền vững ngay lần mở đầu không có mạng. [Đặc tả offline-first](couple-app-offline-first.md) thay thế mô tả chỉ giữ draft hoặc trì hoãn offline bên dưới. Cloud sync và auth không chặn luồng local; đây là quyết định, chưa phải code đã có.
+
 - Cập nhật: 02/10/2026 — UI riêng hai nền tảng; KMP chia sẻ logic/data. Lịch 36–44 tuần bên dưới là baseline cũ dùng UI chung, cần ước lượng lại sau prototype hai UI; chưa phải cam kết cho phương án mới.
 - Trạng thái 05/10/2026: đã bắt đầu [repo local và feature đếm ngày](../README.md). Xem [kết quả kiểm chứng](bootstrap-status.md); các mốc sản phẩm vẫn là kế hoạch, chưa nghiệm thu toàn sprint.
 - Công nghệ đã xác nhận: app KMP, backend Go (Golang), web Next.js.

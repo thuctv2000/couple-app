@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Mobile uses Go API; Admin SDK access is governed by server IAM.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

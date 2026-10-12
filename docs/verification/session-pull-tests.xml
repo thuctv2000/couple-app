@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CounterSessionPullTest[jvm]" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-11T14:29:40.117Z" hostname="AntKings-Mac-mini.local" time="0.007">
+  <properties/>
+  <testcase name="foregroundPullsWithEmptyQueueAndRetriesTransientFailure[jvm]" classname="dev.coupleapp.shared.CounterSessionPullTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -16,3 +16,7 @@
 - Artifact metadata của Maven Central/Google Maven được kiểm tra trước khi ghi version; npm registry dùng cho Next/React.
 - AGP chọn 9.2.1 tương thích Gradle 9.4.1 hiện có; AGP 9.3 cần Gradle 9.5 trở lên. Kotlin 2.4.20 và Navigation 3 1.2.0 giữ theo yêu cầu bản stable mới nhất. [AGP 9.2 compatibility](https://developer.android.com/build/releases/agp-9-2-0-release-notes)
 - Xcode hiện có trên máy là 27.0; bảng tương thích Kotlin tham chiếu 26.4. Chỉ ghi thành công sau khi thực sự build framework/app, không suy ra từ sự hiện diện của Xcode.
+
+## Quyết định offline-first — 07/10/2026
+
+Bước tiếp theo bổ sung local database và repository theo feature: UI đọc local, ghi dữ liệu/outbox nguyên tử; cloud auth/sync chạy sau. [Chi tiết và acceptance](couple-app-offline-first.md). Source prototype hiện chưa có persistence/sync.

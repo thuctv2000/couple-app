@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CounterSessionConflictTest[jvm]" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-11T14:20:21.255Z" hostname="AntKings-Mac-mini.local" time="0.108">
+  <properties/>
+  <testcase name="editAfterPreviewRejectsStaleChoiceAndRefreshEnablesNewChoice[jvm]" classname="dev.coupleapp.shared.CounterSessionConflictTest" time="0.099"/>
+  <testcase name="conflictLoadsComparisonAndServerChoiceDoesNotSendLocalPayload[jvm]" classname="dev.coupleapp.shared.CounterSessionConflictTest" time="0.004"/>
+  <testcase name="changedAccountCannotApplyCachedChoice[jvm]" classname="dev.coupleapp.shared.CounterSessionConflictTest" time="0.001"/>
+  <testcase name="keepLocalResumesSendingAfterExplicitChoice[jvm]" classname="dev.coupleapp.shared.CounterSessionConflictTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

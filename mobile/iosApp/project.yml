@@ -1,4 +1,8 @@
 name: CoupleApp
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk.git
+    exactVersion: 12.19.2
 options:
   bundleIdPrefix: dev.coupleapp
   deploymentTarget:
@@ -14,6 +18,19 @@ targets:
     type: application
     platform: iOS
     sources: [Sources]
+    dependencies:
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseCore
+    info:
+      path: Config/Info.plist
+      properties:
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.coupleapp.local

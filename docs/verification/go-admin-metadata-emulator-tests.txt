@@ -1,0 +1,14 @@
+Verification date: 2026-10-12
+Environment: local Firebase Auth Emulator 127.0.0.1:19099 and Firestore Emulator 127.0.0.1:18081, project label demo-couple-app.
+No Firebase cloud project or account resource was created.
+
+Command:
+APP_ENV=local FIREBASE_PROJECT_ID=demo-couple-app FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:19099 FIRESTORE_EMULATOR_HOST=127.0.0.1:18081 go test -race -v ./internal/integration -run '^TestAdminMetadataIsMinimalAndEveryLookupIsAudited$'
+
+Result:
+=== RUN   TestAdminMetadataIsMinimalAndEveryLookupIsAudited
+--- PASS: TestAdminMetadataIsMinimalAndEveryLookupIsAudited (0.71s)
+PASS
+ok  example.com/coupleapp/backend/internal/integration  2.689s
+
+Coverage: minimal metadata response, no email/display name/counter payload leak, success and not-found audit events, and immediate denial after admin claim removal.

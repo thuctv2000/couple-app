@@ -1,0 +1,4 @@
+=== RUN   TestAdminRoleChangesApplyToExistingToken
+--- PASS: TestAdminRoleChangesApplyToExistingToken (0.16s)
+PASS
+ok  	example.com/coupleapp/backend/internal/integration	1.885s

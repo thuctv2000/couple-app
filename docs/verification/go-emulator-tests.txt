@@ -1,0 +1,55 @@
+?   	example.com/coupleapp/backend/cmd/api	[no test files]
+?   	example.com/coupleapp/backend/internal/features/lovecounter/data	[no test files]
+=== RUN   TestCreateRetryAndNextRevision
+--- PASS: TestCreateRetryAndNextRevision (0.00s)
+=== RUN   TestConflictsDoNotOverwrite
+--- PASS: TestConflictsDoNotOverwrite (0.00s)
+=== RUN   TestOwnerScopeCannotCrossAccounts
+--- PASS: TestOwnerScopeCannotCrossAccounts (0.00s)
+=== RUN   TestInvalidPayloadAndProtocol
+=== RUN   TestInvalidPayloadAndProtocol/host_zone
+=== RUN   TestInvalidPayloadAndProtocol/long_name
+=== RUN   TestInvalidPayloadAndProtocol/UTF16_name
+=== RUN   TestInvalidPayloadAndProtocol/negative_version
+=== RUN   TestInvalidPayloadAndProtocol/invalid_date
+=== RUN   TestInvalidPayloadAndProtocol/unknown_zone
+=== RUN   TestInvalidPayloadAndProtocol/untrimmed_name
+=== RUN   TestInvalidPayloadAndProtocol/invalid_ID
+=== RUN   TestInvalidPayloadAndProtocol/unknown_payload
+=== RUN   TestInvalidPayloadAndProtocol/future_date
+--- PASS: TestInvalidPayloadAndProtocol (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/host_zone (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/long_name (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/UTF16_name (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/negative_version (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/invalid_date (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/unknown_zone (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/untrimmed_name (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/invalid_ID (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/unknown_payload (0.00s)
+    --- PASS: TestInvalidPayloadAndProtocol/future_date (0.00s)
+=== RUN   TestDateUsesCounterZoneAtMidnight
+--- PASS: TestDateUsesCounterZoneAtMidnight (0.00s)
+PASS
+ok  	example.com/coupleapp/backend/internal/features/lovecounter/domain	1.722s
+=== RUN   TestIdentityOutageDoesNotForceReauthentication
+--- PASS: TestIdentityOutageDoesNotForceReauthentication (0.00s)
+=== RUN   TestRejectsInvalidIdentityBeforeStorage
+--- PASS: TestRejectsInvalidIdentityBeforeStorage (0.00s)
+=== RUN   TestOnlyVerifiedUIDReachesStorage
+--- PASS: TestOnlyVerifiedUIDReachesStorage (0.00s)
+=== RUN   TestStrictBodyRejectsClientOwnerAndTrailingJSON
+--- PASS: TestStrictBodyRejectsClientOwnerAndTrailingJSON (0.00s)
+=== RUN   TestErrorsAreSafeAndActionable
+--- PASS: TestErrorsAreSafeAndActionable (0.00s)
+PASS
+ok  	example.com/coupleapp/backend/internal/features/lovecounter/transport	2.639s
+=== RUN   TestFirebaseIdentityAndAtomicReplay
+--- PASS: TestFirebaseIdentityAndAtomicReplay (0.23s)
+=== RUN   TestConcurrentWritesHaveOneWinnerAndOneReceipt
+--- PASS: TestConcurrentWritesHaveOneWinnerAndOneReceipt (2.86s)
+PASS
+ok  	example.com/coupleapp/backend/internal/integration	5.162s
+?   	example.com/coupleapp/backend/internal/platform/firebaseauth	[no test files]
+?   	example.com/coupleapp/backend/internal/platform/httpapi	[no test files]
+?   	example.com/coupleapp/backend/internal/platform/identity	[no test files]

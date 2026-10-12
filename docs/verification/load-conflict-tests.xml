@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="LoadCounterConflictTest[jvm]" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-11T14:20:26.244Z" hostname="AntKings-Mac-mini.local" time="0.012">
+  <properties/>
+  <testcase name="accountChangedDuringReadCannotStoreSnapshot[jvm]" classname="dev.coupleapp.lovecounter.domain.LoadCounterConflictTest" time="0.01"/>
+  <testcase name="repeatedUnauthorizedStopsWithoutSaving[jvm]" classname="dev.coupleapp.lovecounter.domain.LoadCounterConflictTest" time="0.0"/>
+  <testcase name="missingServerCounterDoesNotInventResolution[jvm]" classname="dev.coupleapp.lovecounter.domain.LoadCounterConflictTest" time="0.001"/>
+  <testcase name="refreshesUnauthorizedExactlyOnceAndStoresAuthenticatedSnapshot[jvm]" classname="dev.coupleapp.lovecounter.domain.LoadCounterConflictTest" time="0.0"/>
+  <testcase name="cancellationPropagates[jvm]" classname="dev.coupleapp.lovecounter.domain.LoadCounterConflictTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

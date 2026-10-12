@@ -1,0 +1,14 @@
+=== RUN   TestAccessLogExcludesPrivateRequestData
+--- PASS: TestAccessLogExcludesPrivateRequestData (0.00s)
+=== RUN   TestAccessLogStatusAndUnknownRoutes
+=== RUN   TestAccessLogStatusAndUnknownRoutes/implicit
+=== RUN   TestAccessLogStatusAndUnknownRoutes/unavailable
+=== RUN   TestAccessLogStatusAndUnknownRoutes/missing
+=== RUN   TestAccessLogStatusAndUnknownRoutes/unknown-method
+--- PASS: TestAccessLogStatusAndUnknownRoutes (0.00s)
+    --- PASS: TestAccessLogStatusAndUnknownRoutes/implicit (0.00s)
+    --- PASS: TestAccessLogStatusAndUnknownRoutes/unavailable (0.00s)
+    --- PASS: TestAccessLogStatusAndUnknownRoutes/missing (0.00s)
+    --- PASS: TestAccessLogStatusAndUnknownRoutes/unknown-method (0.00s)
+PASS
+ok  	example.com/coupleapp/backend/internal/platform/httpapi	0.461s
