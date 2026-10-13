@@ -108,7 +108,7 @@ Tài liệu transaction SQL ở trên là tham khảo khái niệm, không chố
 
 ```text
 couple-app/
-  mobile/                 # Logic/data KMP chung; Android Compose và iOS SwiftUI riêng
+  CoupleRewind/                 # Logic/data KMP chung; Android Compose và iOS SwiftUI riêng
   backend/                # Go API, module nghiệp vụ, worker và kiểm thử
   web/                    # Một dự án Next.js: landing + /admin + trang phụ trợ
   contracts/

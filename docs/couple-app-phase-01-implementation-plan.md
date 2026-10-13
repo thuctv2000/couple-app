@@ -1,7 +1,7 @@
 # Kế hoạch triển khai phase 01 — Offline-first + 6 màn native
 
 - Lập ngày 09/10/2026, dựa trên source và tài liệu hiện có.
-- Nguồn lực: một người, AI hỗ trợ, 40 giờ/tuần; làm tuần tự, không giả định có đội mobile/backend/web riêng.
+- Nguồn lực: một người, AI hỗ trợ, 40 giờ/tuần; làm tuần tự, không giả định có đội CoupleRewind/backend/web riêng.
 - Mục tiêu: beta nội bộ Android + iOS với bộ đếm offline-first, Firebase Anonymous, link Google/Apple, đồng bộ Go và web Next.js landing/admin tối thiểu.
 - Ước lượng cơ sở: **8 tuần, 320 giờ**, gồm **264 giờ công việc và 56 giờ dự phòng**. Khoảng lập kế hoạch **8–10 tuần** nếu phát sinh tích hợp/provider/môi trường. Đây là ước lượng, không phải kết quả đo năng suất hay cam kết ngày ra mắt.
 - Tuần 1 bắt đầu khi thực sự triển khai; thời gian chờ tài khoản, quyền hoặc store được ghi riêng. Không tự gán ngày kết thúc theo ngày viết plan.

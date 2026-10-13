@@ -11,9 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import dev.coupleapp.shared.CounterConflictView
 import dev.coupleapp.shared.CounterSession
 import dev.coupleapp.shared.CounterViewState
@@ -22,14 +25,61 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.Instant
 
+private val AppBackground = Color(0xFFFFFAF5)
+private val Rose = Color(0xFFB65F66)
+private val RoseDark = Color(0xFF47292B)
+private val RoseSoft = Color(0xFFF5E4E2)
+private val SageSoft = Color(0xFFE8EDE5)
+private val Sage = Color(0xFF526650)
+
 @Composable
 private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable ColumnScope.() -> Unit) {
-    Scaffold { insets ->
-        Column(Modifier.fillMaxSize().padding(insets).verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            if (back != null) TextButton(onClick = back) { Text("‹ Quay lại") }
-            Text(title, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-            content()
+    Scaffold(containerColor = AppBackground) { insets ->
+        Box(Modifier.fillMaxSize().padding(insets), contentAlignment = Alignment.TopCenter) {
+            Column(
+                Modifier.widthIn(max = 640.dp).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+            ) {
+                if (back != null) TextButton(onClick = back, contentPadding = PaddingValues(horizontal = 0.dp)) { Text("‹  Quay lại", fontSize = 16.sp) }
+                Text(title, color = RoseDark, fontSize = 36.sp, lineHeight = 42.sp, fontWeight = FontWeight.Bold)
+                content()
+                Spacer(Modifier.height(12.dp))
+            }
         }
+    }
+}
+
+@Composable
+private fun PrimaryAction(label: String, onClick: () -> Unit, enabled: Boolean = true) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
+        shape = RoundedCornerShape(18.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Rose),
+    ) { Text(label, fontSize = 18.sp, fontWeight = FontWeight.SemiBold) }
+}
+
+@Composable
+private fun SecondaryAction(label: String, onClick: () -> Unit, enabled: Boolean = true) {
+    OutlinedButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 54.dp),
+        shape = RoundedCornerShape(18.dp),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = RoseDark),
+    ) { Text(label, fontSize = 17.sp, fontWeight = FontWeight.Medium) }
+}
+
+@Composable
+private fun SectionSurface(content: @Composable ColumnScope.() -> Unit) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color.White.copy(alpha = 0.76f),
+        shape = RoundedCornerShape(24.dp),
+        tonalElevation = 1.dp,
+    ) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp), content = content)
     }
 }
 
@@ -39,29 +89,74 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
 }
 
 @Composable fun WelcomeScreen(start: () -> Unit, account: () -> Unit) = Page("Ngày bên nhau") {
-    Spacer(Modifier.height(56.dp))
-    Text("Chuyện của mình,\nbắt đầu từ một ngày.", style = MaterialTheme.typography.displaySmall)
-    Text("Giữ những ngày đáng nhớ, ngay cả khi không có mạng.")
-    Spacer(Modifier.height(24.dp))
-    Button(onClick = start, modifier = Modifier.fillMaxWidth()) { Text("Bắt đầu") }
-    TextButton(onClick = account) { Text("Tôi đã có tài khoản") }
-    Text("Dữ liệu được lưu trên thiết bị trước.", style = MaterialTheme.typography.bodySmall)
+    Surface(
+        modifier = Modifier.align(Alignment.CenterHorizontally).size(112.dp),
+        color = RoseSoft,
+        shape = RoundedCornerShape(40.dp),
+    ) {
+        Box(contentAlignment = Alignment.Center) { Text("♡", color = Rose, fontSize = 64.sp, fontWeight = FontWeight.Light) }
+    }
+    Text(
+        "Chuyện của mình,\nbắt đầu từ một ngày.",
+        modifier = Modifier.fillMaxWidth(),
+        color = RoseDark,
+        fontSize = 38.sp,
+        lineHeight = 45.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+    )
+    Text(
+        "Giữ những ngày đáng nhớ, ngay cả khi không có mạng.",
+        modifier = Modifier.fillMaxWidth(),
+        style = MaterialTheme.typography.titleMedium,
+        textAlign = TextAlign.Center,
+    )
+    Spacer(Modifier.height(8.dp))
+    PrimaryAction("Bắt đầu", start)
+    TextButton(onClick = account, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+        Text("Tôi đã có tài khoản", color = Rose, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+    }
+    Text("Dữ liệu được lưu trên thiết bị trước.", modifier = Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
 }
 
 @Composable fun CounterHomeScreen(state: CounterViewState, edit: () -> Unit, account: () -> Unit, sync: () -> Unit) = Page("Ngày bên nhau") {
-    if (state.displayName.isNotBlank()) Text(listOf(state.displayName, state.partnerName).filter { it.isNotBlank() }.joinToString(" & "))
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer), modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.fillMaxWidth().padding(28.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(state.days.toString(), fontSize = 76.sp, fontWeight = FontWeight.Light)
-            Text("ngày bên nhau", style = MaterialTheme.typography.titleLarge)
-            Text("Từ ngày "+state.startDateIso)
+    if (state.displayName.isNotBlank()) {
+        Text(
+            listOf(state.displayName, state.partnerName).filter { it.isNotBlank() }.joinToString("  &  ").uppercase(),
+            color = Rose,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.5.sp,
+        )
+    }
+    Card(colors = CardDefaults.cardColors(containerColor = Rose), shape = RoundedCornerShape(30.dp), modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 42.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            Text(state.days.toString(), color = Color.White, fontSize = 104.sp, lineHeight = 108.sp, fontWeight = FontWeight.Light)
+            Text("ngày bên nhau", color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Medium)
+            HorizontalDivider(Modifier.width(72.dp), color = Color.White.copy(alpha = 0.72f))
+            Text("Từ ngày ${state.startDateIso}", color = Color.White.copy(alpha = 0.9f), fontSize = 18.sp)
         }
     }
     if (state.errorCode != null) Text(errorText(state.errorCode), color = MaterialTheme.colorScheme.error)
-    TextButton(onClick = sync) { Text("Đã lưu trên máy · ${state.pendingCount} thay đổi chờ đồng bộ") }
-    Button(onClick = edit, modifier = Modifier.fillMaxWidth()) { Text("Chỉnh thông tin") }
-    OutlinedButton(onClick = account, modifier = Modifier.fillMaxWidth()) { Text("Tài khoản và dữ liệu") }
-    Text(syncText(state.syncState), style = MaterialTheme.typography.bodySmall)
+    Surface(onClick = sync, modifier = Modifier.fillMaxWidth(), color = SageSoft, shape = RoundedCornerShape(22.dp)) {
+        Row(Modifier.padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Surface(color = Sage, shape = RoundedCornerShape(16.dp), modifier = Modifier.size(48.dp)) {
+                Box(contentAlignment = Alignment.Center) { Text("✓", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold) }
+            }
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                Text("Đã lưu trên máy", color = Sage, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(if (state.pendingCount == 0) "Không có thay đổi đang chờ" else "${state.pendingCount} thay đổi chờ đồng bộ", color = Sage.copy(alpha = 0.82f), fontSize = 14.sp)
+            }
+            Text("›", color = Sage, fontSize = 28.sp)
+        }
+    }
+    PrimaryAction("Chỉnh thông tin", edit)
+    SectionSurface {
+        Text("Giữ lại câu chuyện của mình", color = RoseDark, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text("Thêm cách đăng nhập để khôi phục dữ liệu đã đồng bộ khi đổi máy.", style = MaterialTheme.typography.bodyLarge)
+        SecondaryAction("Tài khoản và dữ liệu", account)
+    }
+    Text(syncText(state.syncState), modifier = Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,22 +181,22 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
             OutlinedTextField(partner, { partner = it }, label = { Text("Tên người ấy (không bắt buộc)") }, singleLine = true, modifier = Modifier.fillMaxWidth())
         }
         Text("Chọn ngày hai bạn muốn ghi nhớ.")
-        OutlinedButton(onClick = { picker = true }, modifier = Modifier.fillMaxWidth()) { Text(date) }
-        if (!initial) OutlinedButton(onClick = { zonePicker = true }, modifier = Modifier.fillMaxWidth()) { Text("Múi giờ: " + zoneLabel(zone)) }
+        SecondaryAction(date, { picker = true })
+        if (!initial) SecondaryAction("Múi giờ: " + zoneLabel(zone), { zonePicker = true })
         Text("Ngày đầu tiên được tính là ngày 1.")
         if (error != null) Text(errorText(error), color = MaterialTheme.colorScheme.error)
         if (baseRevision != state.localRevision) {
             Text("Có thông tin mới: ${state.displayName} · ${state.partnerName}\n${state.startDateIso} · ${zoneLabel(state.timeZoneId)}")
             OutlinedButton(onClick = { reload = true }, enabled = !busy) { Text("Dùng bản mới để sửa") }
         }
-        Button(enabled = !busy, modifier = Modifier.fillMaxWidth(), onClick = {
+        PrimaryAction(if (busy) "Đang lưu…" else if (initial) "Lưu và tiếp tục" else "Lưu thay đổi", enabled = !busy, onClick = {
             busy = true; error = null
             session.save(name, partner, date, zone, baseRevision) { result ->
                 busy = false
                 if (result.errorCode == null) saved() else error = result.errorCode
             }
-        }) { Text(if (busy) "Đang lưu…" else if (initial) "Lưu và tiếp tục" else "Lưu thay đổi") }
-        Text("Lưu trên máy · Không cần Internet", style = MaterialTheme.typography.bodySmall)
+        })
+        Text("Lưu trên máy · Không cần Internet", modifier = Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
     }
     if (picker) {
         val selected = rememberDatePickerState(initialSelectedDateMillis = LocalDate.parse(date).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli())
@@ -137,45 +232,42 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
 @Composable fun AccountScreen(state: CounterViewState, back: () -> Unit, sync: () -> Unit, observability: FirebaseObservability) = Page("Tài khoản", back) {
     var analyticsEnabled by rememberSaveable { mutableStateOf(observability.analyticsEnabled) }
     var crashReportsEnabled by rememberSaveable { mutableStateOf(observability.crashReportsEnabled) }
-    Text(state.displayName.ifBlank { "Không gian của bạn" }, style = MaterialTheme.typography.titleLarge)
-    Text("Đang dùng trên thiết bị")
-    Text("Bạn chưa cần đăng nhập để lưu dữ liệu trên máy.")
-    Text("Google/Apple và khôi phục từ cloud đang được triển khai.")
-    Text(syncText(state.syncState))
-    OutlinedButton(onClick = sync) { Text("Xem trạng thái đồng bộ") }
-    Text("Dữ liệu chưa đồng bộ có thể mất khi xóa ứng dụng.", style = MaterialTheme.typography.bodySmall)
-    HorizontalDivider()
-    Text("Chẩn đoán và cải thiện", style = MaterialTheme.typography.titleMedium)
-    if (!observability.available) {
-        Text("Bản local chưa kết nối Firebase Analytics/Crashlytics. Không có dữ liệu chẩn đoán nào được gửi.")
-    }
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.weight(1f)) {
-            Text("Chia sẻ dữ liệu sử dụng")
-            Text("Chỉ sự kiện kỹ thuật đã giới hạn; không gồm tên, ngày, UID hay nội dung.", style = MaterialTheme.typography.bodySmall)
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Surface(color = RoseSoft, shape = RoundedCornerShape(36.dp), modifier = Modifier.size(104.dp)) {
+            Box(contentAlignment = Alignment.Center) { Text("♡", color = Rose, fontSize = 58.sp) }
         }
-        Switch(
-            checked = analyticsEnabled,
-            onCheckedChange = { value ->
-                observability.setAnalyticsEnabled(value)
-                analyticsEnabled = observability.analyticsEnabled
-            },
-            enabled = observability.available,
-        )
+        Text(state.displayName.ifBlank { "Không gian của bạn" }, color = RoseDark, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        Surface(color = SageSoft, shape = RoundedCornerShape(50)) { Text("Đang dùng trên thiết bị", modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), color = Sage, fontWeight = FontWeight.SemiBold) }
     }
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.weight(1f)) {
-            Text("Gửi báo cáo lỗi")
-            Text("Gửi crash kỹ thuật để sửa lỗi; mặc định tắt.", style = MaterialTheme.typography.bodySmall)
+    SectionSurface {
+        Text("Tài khoản và dữ liệu", color = RoseDark, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text("Bạn chưa cần đăng nhập để lưu dữ liệu trên máy.", style = MaterialTheme.typography.bodyLarge)
+        Text("Google/Apple và khôi phục từ cloud đang được triển khai.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HorizontalDivider()
+        Text(syncText(state.syncState), style = MaterialTheme.typography.bodyLarge)
+        SecondaryAction("Xem trạng thái đồng bộ", sync)
+        Text("Dữ liệu chưa đồng bộ có thể mất khi xóa ứng dụng.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+    SectionSurface {
+        Text("Chẩn đoán và cải thiện", color = RoseDark, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        if (!observability.available) {
+            Text("Bản local chưa kết nối Analytics/Crashlytics. Không có dữ liệu chẩn đoán nào được gửi.", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Switch(
-            checked = crashReportsEnabled,
-            onCheckedChange = { value ->
-                observability.setCrashReportsEnabled(value)
-                crashReportsEnabled = observability.crashReportsEnabled
-            },
-            enabled = observability.available,
-        )
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text("Chia sẻ dữ liệu sử dụng", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                Text("Không gồm tên, ngày, UID hay nội dung.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Switch(checked = analyticsEnabled, onCheckedChange = { value -> observability.setAnalyticsEnabled(value); analyticsEnabled = observability.analyticsEnabled }, enabled = observability.available)
+        }
+        HorizontalDivider()
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text("Gửi báo cáo lỗi", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+                Text("Mặc định tắt. Khi bật, Firebase có thể gửi cả báo cáo crash đã lưu trên máy từ trước.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Switch(checked = crashReportsEnabled, onCheckedChange = { value -> observability.setCrashReportsEnabled(value); crashReportsEnabled = observability.crashReportsEnabled }, enabled = observability.available)
+        }
     }
 }
 
@@ -191,8 +283,8 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
         Text("Trên máy: ${state.displayName} · ${state.partnerName}\n${state.startDateIso} · ${zoneLabel(state.timeZoneId)}")
         Text("Trên server: ${conflict.displayName} · ${conflict.partnerName}\n${conflict.startDateIso} · ${zoneLabel(conflict.timeZoneId)}")
         if (!conflict.isCurrent) Text("Bạn vừa sửa dữ liệu. Bấm Thử đồng bộ để cập nhật bản so sánh.")
-        Button(onClick = { choice = conflict to true }, enabled = conflict.isCurrent && !state.saving) { Text("Giữ bản trên máy") }
-        OutlinedButton(onClick = { choice = conflict to false }, enabled = conflict.isCurrent && !state.saving) { Text("Dùng bản server") }
+        PrimaryAction("Giữ bản trên máy", { choice = conflict to true }, enabled = conflict.isCurrent && !state.saving)
+        SecondaryAction("Dùng bản server", { choice = conflict to false }, enabled = conflict.isCurrent && !state.saving)
     }
     resolutionError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     choice?.let { (conflict, keepLocal) ->
@@ -209,10 +301,10 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
     }
     if (state.syncState != "not_configured") {
         Text("Bản kiểm thử: kết nối máy chủ local, chưa phải bản sao lưu cloud.", style = MaterialTheme.typography.bodySmall)
-        OutlinedButton(onClick = retry, enabled = state.syncState != "syncing") { Text("Thử đồng bộ") }
+        SecondaryAction("Thử đồng bộ", retry, enabled = state.syncState != "syncing")
     }
     if (state.hasCounter) ListItem(headlineContent = { Text("Thông tin bộ đếm") }, supportingContent = { Text("Ngày bắt đầu và tên hiển thị") })
-    Button(onClick = back) { Text("Tiếp tục dùng app") }
+    PrimaryAction("Tiếp tục dùng app", back)
 }
 
 private fun errorText(code: String?) = when(code) {

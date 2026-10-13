@@ -2,7 +2,7 @@ import SwiftUI
 @preconcurrency import FirebaseCore
 
 @main
-struct CoupleApp: App {
+struct CoupleRewind: App {
     init() {
         #if DEBUG && targetEnvironment(simulator)
         let usesLocalEmulator = ProcessInfo.processInfo.environment["COUPLE_FIREBASE_EMULATOR"] == "1"

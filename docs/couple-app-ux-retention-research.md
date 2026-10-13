@@ -30,7 +30,7 @@ Không bắt nhóm đầu tiên mời người yêu mới được dùng. Không
 |---|---|---|
 | [Mobbin](https://mobbin.com/) | Trang công khai mô tả thư viện screens, flows, UI elements; chưa truy cập đầy đủ bộ flow sau đăng nhập | Tra pattern theo tình huống, sau đó xem cả luồng. Không coi screenshot đẹp là bằng chứng tăng retention |
 | [Mobbin — mô tả flow](https://mobbin.com/?trk=public_post_share-update_update-text) | Trang công khai nêu video, prototype và collections | Khi có quyền truy cập, lưu flow, trạng thái, ngày capture và ghi chú lý do chọn, không chỉ gom ảnh |
-| [Page Flows — Notification settings](https://pageflows.com/screens/mobile/view/notification-settings/) | Có kết quả được lập chỉ mục; công cụ không tải được trang đầy đủ | Nguồn bổ sung để xem chuỗi tương tác; chưa khẳng định đã xem video hoặc màn hình cụ thể |
+| [Page Flows — Notification settings](https://pageflows.com/screens/CoupleRewind/view/notification-settings/) | Có kết quả được lập chỉ mục; công cụ không tải được trang đầy đủ | Nguồn bổ sung để xem chuỗi tương tác; chưa khẳng định đã xem video hoặc màn hình cụ thể |
 | [UserOnboard](https://www.useronboard.com/) | Trang công khai và danh mục teardown | Phù hợp tìm cách đưa người mới tới kết quả đầu tiên; chưa audit mọi teardown |
 | [Growth.Design — Hopper](https://growth.design/case-studies/hopper-permission-requests-ux) | Đọc nội dung case study | Prompt theo hành động và lợi ích người dùng; hỏi đúng ngữ cảnh vẫn có thể quá sớm khi chưa tạo niềm tin |
 | [Growth.Design — Spotify Wrapped](https://growth.design/case-studies/spotify-wrapped-psychology) | Đọc nội dung case study | Recap có thể kể câu chuyện từ dữ liệu cá nhân; đề xuất áp dụng vào kỷ niệm của cặp đôi |
@@ -87,7 +87,7 @@ Mỗi feature phải có ma trận trạng thái: khởi tạo, tải, có dữ 
 | UX15 | Chống thông báo trùng/cũ | Một sự kiện không phát nhiều lần; gửi lại có idempotency, loại lời mời hết hạn, kiểm tra unpair trước khi gửi. Push mặc định giấu nội dung nhạy cảm | Kèm notification |
 | UX16 | Cài đặt dễ hiểu | Tài khoản, dữ liệu, người xem, thông báo, giao diện, trợ giúp; hiện quyền hệ thống đang tắt. Dùng nhãn người dùng hiểu, không đưa tên SDK vào UI | Nền |
 
-Android khuyến nghị cân nhắc vị trí xin quyền trong hành trình và cho người dùng kiểm soát thông báo. Các ngưỡng tần suất dưới đây là đề xuất sản phẩm, không phải chuẩn nền tảng. [Android notification design](https://developer.android.com/design/ui/mobile/guides/home-screen/notifications)
+Android khuyến nghị cân nhắc vị trí xin quyền trong hành trình và cho người dùng kiểm soát thông báo. Các ngưỡng tần suất dưới đây là đề xuất sản phẩm, không phải chuẩn nền tảng. [Android notification design](https://developer.android.com/design/ui/CoupleRewind/guides/home-screen/notifications)
 
 ### D. Ghép đôi và vòng đời mối quan hệ
 

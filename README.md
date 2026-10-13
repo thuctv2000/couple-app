@@ -10,7 +10,7 @@ Monorepo khởi đầu: logic KMP dùng chung, UI Android Compose và iOS SwiftU
 - Đã thêm Room KMP: lưu bộ đếm và outbox cùng transaction, đọc lại khi mở app. Android đã kiểm chứng lưu offline, sync Anonymous, pull, hai lựa chọn conflict và chặn editor cũ ghi đè dữ liệu mới. APK và framework KMP iOS build thành công; app SwiftUI đã build/cài/khởi động trên iOS Simulator; 17 native tests qua, gồm Room persistence. Thao tác UI và sync iOS end-to-end chưa kiểm chứng. Xem [bằng chứng triển khai](docs/phase-01-progress.md).
 - Android debug đã kiểm chứng Firebase Anonymous và gửi outbox tới Go/Firestore Emulator, gồm sửa offline rồi mở lại có mạng. Mặc định chưa cấu hình vẫn local-only; iOS Auth end-to-end, liên kết Google/Apple và cloud thật chưa hoàn tất. Admin session/metadata/audit đã kiểm chứng bằng emulator, còn thiếu popup Google với cấu hình project hiện có. Xem [cách bật kiểm thử local](firebase/README.md).
 - Mobile analytics và crash reporting dùng công tắc riêng, mặc định tắt, không hoạt động khi chạy emulator local hoặc thiếu cấu hình Firebase từ project có sẵn. Event chỉ chứa các trường đã cho phép; xem [quy ước observability](docs/mobile-observability.md).
-- `CoupleApp`, `dev.coupleapp.local` và Go module `example.com/coupleapp/backend` là định danh local tạm thời. Chốt định danh thật trước khi đăng ký Firebase/OAuth/signing.
+- Mobile là dự án KMP [CoupleRewind](CoupleRewind/README.md), có Gradle root riêng. `dev.coupleapp.local` và Go module `example.com/coupleapp/backend` vẫn là định danh local tạm thời. Chốt định danh thật trước khi đăng ký Firebase/OAuth/signing.
 
 Kết quả kiểm chứng thực tế được ghi trong [Báo cáo khởi tạo](docs/bootstrap-status.md). Cấu hình build không đồng nghĩa đã chạy thành công trên thiết bị.
 
@@ -19,7 +19,7 @@ Kết quả mới nhất: 41 feature + 12 shared JVM tests đã qua; Android APK
 ## Cấu trúc
 
 ```text
-mobile/
+CoupleRewind/
   androidApp/                  # Compose, Navigation 3, presentation theo feature
   iosApp/                      # SwiftUI, NavigationStack, presentation theo feature
   shared/                      # Facade nhỏ cho Swift/Android; không chứa UI
@@ -37,23 +37,23 @@ Không tạo repository hoặc data layer rỗng khi feature chưa truy cập d�
 
 ## Mobile
 
-Yêu cầu JDK 17+, Android SDK Platform 37.0 và Build Tools 36.1.0, cùng Xcode trên Mac để build iOS. Phiên bản Kotlin/Android/library được khóa trong `mobile/gradle/libs.versions.toml`; Gradle wrapper có checksum distribution.
+Yêu cầu JDK 17+, Android SDK Platform 37.0 và Build Tools 36.1.0, cùng Xcode trên Mac để build iOS. Phiên bản Kotlin/Android/library được khóa trong `CoupleRewind/gradle/libs.versions.toml`; Gradle wrapper có checksum distribution.
 
-Tạo `mobile/local.properties` chứa đường dẫn SDK của máy, hoặc cấu hình `ANDROID_HOME`. File này không commit.
+Tạo `CoupleRewind/local.properties` chứa đường dẫn SDK của máy, hoặc cấu hình `ANDROID_HOME`. File này không commit.
 
 ```sh
-cd mobile
+cd CoupleRewind
 ./gradlew :feature:lovecounter:jvmTest :shared:jvmTest
 ./gradlew :androidApp:assembleDebug
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
 ```
 
-Mở project `mobile` bằng Android Studio. iOS: mở `mobile/iosApp/CoupleApp.xcodeproj`, chọn simulator và Run. Build phase của Xcode tạo `CoupleShared` từ KMP; Gradle/JDK phải truy cập được trong môi trường Xcode. Thiết bị thật cần signing/team riêng.
+Mở project `CoupleRewind` bằng Android Studio. iOS: mở `CoupleRewind/iosApp/CoupleRewind.xcodeproj`, chọn simulator và Run. Build phase của Xcode tạo `CoupleShared` từ KMP; Gradle/JDK phải truy cập được trong môi trường Xcode. Thiết bị thật cần signing/team riêng.
 
 Project Xcode đã được sinh và đưa vào repo. Build script mặc định dùng wrapper; khi kiểm chứng trên máy này có thể đặt `COUPLE_GRADLE_EXECUTABLE` tới executable Gradle 9.4.1 có sẵn để dùng cùng phiên bản. Nếu sửa `project.yml`, dùng XcodeGen để sinh lại:
 
 ```sh
-cd mobile/iosApp
+cd CoupleRewind/iosApp
 xcodegen generate
 ```
 

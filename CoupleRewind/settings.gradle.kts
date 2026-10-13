@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "CoupleApp"
+rootProject.name = "CoupleRewind"
 include(":androidApp", ":shared", ":feature:lovecounter")

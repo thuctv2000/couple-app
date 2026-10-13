@@ -38,7 +38,7 @@
 | Xcode project/scheme | Đọc được target/scheme bằng `xcodebuild -list` |
 | Import boundary domain, JSON, whitespace | Qua kiểm tra ban đầu |
 | KMP JVM tests | Qua: 9 tests, 0 failures, 0 errors; gồm 6 domain tests và 3 facade tests |
-| Android APK | Qua: `:androidApp:assembleDebug`; APK tại `mobile/androidApp/build/outputs/apk/debug/androidApp-debug.apk` |
+| Android APK | Qua: `:androidApp:assembleDebug`; APK tại `CoupleRewind/androidApp/build/outputs/apk/debug/androidApp-debug.apk` |
 | iOS KMP framework | Qua: `:shared:linkDebugFrameworkIosSimulatorArm64`, tạo `CoupleShared.framework` |
 | Xcode tích hợp framework | Qua: build phase `:shared:embedAndSignAppleFrameworkForXcode` hoàn tất |
 | iOS SwiftUI app | Chưa qua: compiler macro `SwiftUIMacros.StateMacro` bị chặn bởi `sandbox-exec: sandbox_apply: Operation not permitted`; Xcode kết thúc với mã 65 |
@@ -59,7 +59,7 @@ Chạy bằng Terminal hoặc Xcode trên máy phát triển ngoài môi trườ
 ```sh
 cd mobile
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
-xcodebuild -project iosApp/CoupleApp.xcodeproj \
+xcodebuild -project iosApp/CoupleRewind.xcodeproj \
   -scheme CoupleApp -configuration Debug \
   -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
   -derivedDataPath build/ios-derived-data \

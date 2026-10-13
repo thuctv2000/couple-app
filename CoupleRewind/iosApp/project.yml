@@ -1,4 +1,4 @@
-name: CoupleApp
+name: CoupleRewind
 packages:
   Firebase:
     url: https://github.com/firebase/firebase-ios-sdk.git
@@ -14,7 +14,7 @@ settings:
     FRAMEWORK_SEARCH_PATHS: "$(inherited) $(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
     OTHER_LDFLAGS: "$(inherited) -framework CoupleShared"
 targets:
-  CoupleApp:
+  CoupleRewind:
     type: application
     platform: iOS
     sources: [Sources]
@@ -60,7 +60,7 @@ targets:
           fi
         basedOnDependencyAnalysis: false
 schemes:
-  CoupleApp:
+  CoupleRewind:
     build:
       targets:
-        CoupleApp: all
+        CoupleRewind: all

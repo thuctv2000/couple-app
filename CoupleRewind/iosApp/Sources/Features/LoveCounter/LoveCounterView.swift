@@ -2,6 +2,13 @@ import SwiftUI
 import Combine
 @preconcurrency import CoupleShared
 
+private let appBackground = Color(red: 1.0, green: 0.98, blue: 0.96)
+private let appRose = Color(red: 0.71, green: 0.37, blue: 0.40)
+private let appRoseDark = Color(red: 0.28, green: 0.16, blue: 0.17)
+private let appRoseSoft = Color(red: 0.96, green: 0.89, blue: 0.88)
+private let appSage = Color(red: 0.32, green: 0.40, blue: 0.31)
+private let appSageSoft = Color(red: 0.91, green: 0.93, blue: 0.90)
+
 @MainActor
 final class CounterModel: ObservableObject {
     @Published var state: CounterViewState?
@@ -46,7 +53,6 @@ struct LoveCounterView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var model = CounterModel()
     @State private var path: [CounterRoute] = []
-    private let rose = Color(red: 0.68, green: 0.37, blue: 0.39)
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -70,7 +76,7 @@ struct LoveCounterView: View {
                 }
             }
         }
-        .tint(rose)
+        .tint(appRose)
         .onAppear { model.start() }
         .onDisappear { model.stop() }
         .onChange(of: scenePhase) { _, phase in
@@ -79,73 +85,185 @@ struct LoveCounterView: View {
     }
 
     private var welcome: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 28) {
-                Image(systemName: "heart").font(.system(size: 48)).foregroundStyle(rose).accessibilityHidden(true)
-                Text("Chuyện của mình,\nbắt đầu từ một ngày.").font(.largeTitle.bold())
-                Text("Giữ những ngày đáng nhớ, ngay cả khi không có mạng.")
-                Button("Bắt đầu") { path.append(.setup) }.buttonStyle(.borderedProminent)
-                Button("Tôi đã có tài khoản") { path.append(.account) }
-                Text("Dữ liệu được lưu trên thiết bị trước.").font(.footnote).foregroundStyle(.secondary)
-            }.padding(24)
-        }.navigationTitle("Ngày bên nhau")
+        ZStack {
+            appBackground.ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: 26) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 36, style: .continuous).fill(appRoseSoft)
+                        Image(systemName: "heart").font(.system(size: 52, weight: .light)).foregroundStyle(appRose)
+                    }
+                    .frame(width: 112, height: 112)
+                    .accessibilityHidden(true)
+                    Text("Chuyện của mình,\nbắt đầu từ một ngày.")
+                        .font(.system(size: 38, weight: .bold, design: .rounded))
+                        .foregroundStyle(appRoseDark)
+                        .multilineTextAlignment(.center)
+                    Text("Giữ những ngày đáng nhớ, ngay cả khi không có mạng.")
+                        .font(.title3)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                    Button { path.append(.setup) } label: {
+                        Text("Bắt đầu").font(.headline).frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.roundedRectangle(radius: 18))
+                    Button { path.append(.account) } label: {
+                        Text("Tôi đã có tài khoản").font(.headline).frame(maxWidth: .infinity, minHeight: 48)
+                    }
+                    Text("Dữ liệu được lưu trên thiết bị trước.").font(.body).foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: 560)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 28)
+            }
+        }
+        .navigationTitle("Ngày bên nhau")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func home(_ state: CounterViewState) -> some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                if !state.displayName.isEmpty {
-                    Text([state.displayName, state.partnerName].filter { !$0.isEmpty }.joined(separator: " & ")).font(.title2)
+        ZStack {
+            appBackground.ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: 20) {
+                    VStack(alignment: .leading, spacing: 5) {
+                        if !state.displayName.isEmpty {
+                            Text([state.displayName, state.partnerName].filter { !$0.isEmpty }.joined(separator: "  &  ").uppercased())
+                                .font(.subheadline.weight(.bold)).tracking(1.5).foregroundStyle(appRose)
+                        }
+                        Text("Ngày bên nhau")
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                            .foregroundStyle(appRoseDark)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    VStack(spacing: 16) {
+                        Text("\(state.days)")
+                            .font(.system(size: 106, weight: .light, design: .rounded))
+                            .minimumScaleFactor(0.45)
+                        Text("ngày bên nhau").font(.system(size: 27, weight: .medium, design: .rounded))
+                        Rectangle().fill(.white.opacity(0.7)).frame(width: 72, height: 1)
+                        Text("Từ ngày \(state.startDateIso)").font(.title3)
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, minHeight: 360)
+                    .padding(.horizontal, 22)
+                    .background(
+                        LinearGradient(colors: [appRose.opacity(0.88), appRose], startPoint: .topLeading, endPoint: .bottomTrailing),
+                        in: RoundedRectangle(cornerRadius: 30, style: .continuous)
+                    )
+                    if state.errorCode != nil { Text("Kiểm tra lại ngày bắt đầu và múi giờ.").foregroundStyle(.red) }
+                    Button { path.append(.sync) } label: {
+                        HStack(spacing: 14) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15, style: .continuous).fill(appSage)
+                                Image(systemName: "iphone.gen2.badge.checkmark").font(.title2).foregroundStyle(.white)
+                            }.frame(width: 48, height: 48)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("Đã lưu trên máy").font(.headline)
+                                Text(state.pendingCount == 0 ? "Không có thay đổi đang chờ" : "\(state.pendingCount) thay đổi chờ đồng bộ")
+                                    .font(.subheadline).foregroundStyle(appSage.opacity(0.8))
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.headline)
+                        }
+                        .foregroundStyle(appSage)
+                        .padding(16)
+                        .background(appSageSoft, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    Button { path.append(.edit) } label: {
+                        Text("Chỉnh thông tin").font(.headline).frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.roundedRectangle(radius: 18))
+                    VStack(alignment: .leading, spacing: 14) {
+                        Text("Giữ lại câu chuyện của mình").font(.title3.bold()).foregroundStyle(appRoseDark)
+                        Text("Thêm cách đăng nhập để khôi phục dữ liệu đã đồng bộ khi đổi máy.").font(.body).foregroundStyle(.secondary)
+                        Button { path.append(.account) } label: {
+                            Text("Tài khoản và dữ liệu").font(.headline).frame(maxWidth: .infinity, minHeight: 44)
+                        }
+                            .buttonStyle(.bordered)
+                            .buttonBorderShape(.roundedRectangle(radius: 17))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(20)
+                    .background(.white.opacity(0.76), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    Text(syncText(state.syncState)).font(.body).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
-                VStack(spacing: 16) {
-                    Text("\(state.days)").font(.system(size: 76, weight: .light, design: .rounded)).minimumScaleFactor(0.5)
-                    Text("ngày bên nhau").font(.title2)
-                    Text("Từ ngày \(state.startDateIso)")
-                }
-                .frame(maxWidth: .infinity).padding(28)
-                .background(rose.opacity(0.15), in: RoundedRectangle(cornerRadius: 24))
-                if state.errorCode != nil { Text("Kiểm tra lại ngày bắt đầu và múi giờ.").foregroundStyle(.red) }
-                Button { path.append(.sync) } label: {
-                    Label("Đã lưu trên máy · \(state.pendingCount) thay đổi chờ đồng bộ", systemImage: "iphone")
-                }
-                Button("Chỉnh thông tin") { path.append(.edit) }.buttonStyle(.borderedProminent)
-                Button("Tài khoản và dữ liệu") { path.append(.account) }.buttonStyle(.bordered)
-                Text(syncText(state.syncState)).font(.footnote).foregroundStyle(.secondary)
-            }.padding(24)
-        }.navigationTitle("Ngày bên nhau")
+                .frame(maxWidth: 600)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 18)
+            }
+        }
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var account: some View {
-        Form {
-            Section {
-                Text(model.state?.displayName.isEmpty == false ? model.state!.displayName : "Không gian của bạn").font(.title2)
-                Label("Đang dùng trên thiết bị", systemImage: "iphone")
-            }
-            Section("Tài khoản") {
-                Text("Bạn chưa cần đăng nhập để lưu dữ liệu trên máy.")
-                Text("Google/Apple và khôi phục từ cloud đang được triển khai.")
-                Text(syncText(model.state?.syncState ?? "not_configured"))
-            }
-            Section("Dữ liệu của bạn") {
-                Button("Xem trạng thái đồng bộ") { path.append(.sync) }
-                Text("Dữ liệu chưa đồng bộ có thể mất khi xóa ứng dụng.").font(.footnote)
-            }
-            Section("Chẩn đoán và cải thiện") {
-                if !model.analyticsAvailable {
-                    Text("Bản local chưa kết nối Firebase Analytics/Crashlytics. Không có dữ liệu chẩn đoán nào được gửi.")
+        ZStack {
+            appBackground.ignoresSafeArea()
+            ScrollView {
+                VStack(spacing: 20) {
+                    VStack(spacing: 10) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 34, style: .continuous).fill(appRoseSoft)
+                            Image(systemName: "person").font(.system(size: 48, weight: .light)).foregroundStyle(appRoseDark)
+                        }.frame(width: 104, height: 104)
+                        Text(model.state?.displayName.isEmpty == false ? model.state!.displayName : "Không gian của bạn")
+                            .font(.system(size: 30, weight: .bold, design: .rounded)).foregroundStyle(appRoseDark)
+                        Label("Đang dùng trên thiết bị", systemImage: "iphone")
+                            .font(.subheadline.weight(.semibold)).foregroundStyle(appSage)
+                            .padding(.horizontal, 15).padding(.vertical, 8)
+                            .background(appSageSoft, in: Capsule())
+                    }
+                    accountCard {
+                        Text("Tài khoản và dữ liệu").font(.title2.bold()).foregroundStyle(appRoseDark)
+                        Text("Bạn chưa cần đăng nhập để lưu dữ liệu trên máy.").font(.body)
+                        Text("Google/Apple và khôi phục từ cloud đang được triển khai.").font(.body).foregroundStyle(.secondary)
+                        Divider()
+                        Text(syncText(model.state?.syncState ?? "not_configured")).font(.body)
+                        Button { path.append(.sync) } label: {
+                            Text("Xem trạng thái đồng bộ").font(.headline).frame(maxWidth: .infinity, minHeight: 44)
+                        }
+                            .buttonStyle(.bordered).buttonBorderShape(.roundedRectangle(radius: 17))
+                        Text("Dữ liệu chưa đồng bộ có thể mất khi xóa ứng dụng.").font(.callout).foregroundStyle(.secondary)
+                    }
+                    accountCard {
+                        Text("Chẩn đoán và cải thiện").font(.title2.bold()).foregroundStyle(appRoseDark)
+                        if !model.analyticsAvailable {
+                            Text("Bản local chưa kết nối Analytics/Crashlytics. Không có dữ liệu chẩn đoán nào được gửi.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
+                        Toggle(isOn: Binding(get: { model.analyticsEnabled }, set: { model.setAnalyticsEnabled($0) })) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Chia sẻ dữ liệu sử dụng").font(.headline)
+                                Text("Không gồm tên, ngày, UID hay nội dung.").font(.callout).foregroundStyle(.secondary)
+                            }
+                        }.disabled(!model.analyticsAvailable).frame(minHeight: 62)
+                        Divider()
+                        Toggle(isOn: Binding(get: { model.crashReportsEnabled }, set: { model.setCrashReportsEnabled($0) })) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Gửi báo cáo lỗi").font(.headline)
+                                Text("Mặc định tắt. Khi bật, Firebase có thể gửi cả báo cáo crash đã lưu trên máy từ trước.").font(.callout).foregroundStyle(.secondary)
+                            }
+                        }.disabled(!model.analyticsAvailable).frame(minHeight: 62)
+                    }
                 }
-                Toggle("Chia sẻ dữ liệu sử dụng", isOn: Binding(
-                    get: { model.analyticsEnabled },
-                    set: { model.setAnalyticsEnabled($0) }
-                )).disabled(!model.analyticsAvailable)
-                Text("Chỉ sự kiện kỹ thuật đã giới hạn; không gồm tên, ngày, UID hay nội dung.").font(.footnote)
-                Toggle("Gửi báo cáo lỗi", isOn: Binding(
-                    get: { model.crashReportsEnabled },
-                    set: { model.setCrashReportsEnabled($0) }
-                )).disabled(!model.analyticsAvailable)
-                Text("Mặc định tắt. Khi bật, Firebase có thể gửi báo cáo crash đã lưu cục bộ từ trước.").font(.footnote)
+                .frame(maxWidth: 600)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 28)
             }
-        }.navigationTitle("Tài khoản")
+        }
+        .navigationTitle("Tài khoản")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func accountCard<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 14, content: content)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(20)
+            .background(.white.opacity(0.78), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 
     private var sync: some View {
@@ -166,7 +284,12 @@ struct LoveCounterView: View {
                 }
                 Button("Tiếp tục dùng app") { path.removeLast() }
             }
-        }.navigationTitle("Đồng bộ dữ liệu")
+        }
+        .scrollContentBackground(.hidden)
+        .background(appBackground)
+        .environment(\.defaultMinListRowHeight, 52)
+        .navigationTitle("Đồng bộ dữ liệu")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -273,6 +396,9 @@ private struct CounterEditor: View {
                 Text("Lưu trên máy · Không cần Internet").font(.footnote).foregroundStyle(.secondary)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(appBackground)
+        .environment(\.defaultMinListRowHeight, 52)
         .navigationTitle(initial ? "Ngày mình bắt đầu?" : "Chỉnh thông tin")
         .navigationBarBackButtonHidden(true)
         .toolbar {

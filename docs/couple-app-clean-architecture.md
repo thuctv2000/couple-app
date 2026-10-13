@@ -54,7 +54,7 @@ flowchart LR
 
 ```text
 couple-app/
-  mobile/
+  CoupleRewind/
   backend/
   web/
   contracts/
@@ -79,7 +79,7 @@ couple-app/
 ### 4.1. Cấu trúc đề xuất
 
 ```text
-mobile/
+CoupleRewind/
   androidApp/                       # Jetpack Compose UI, ViewModel, Navigation 3
     features/auth/                  # AuthScreen, AuthViewModel (package trong source)
     navigation/                     # Android back stack, deep link

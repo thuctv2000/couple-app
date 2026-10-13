@@ -34,7 +34,7 @@ Google/Apple vẫn là yêu cầu của v1. Sprint này kiểm chứng một đ�
 | Firebase dev | Tách môi trường dev; Auth Anonymous, đăng ký Android/iOS và cấu hình provider khi đến bài thử | Không cần tạo production hay bật billing để hoàn thành phần local |
 | Tài khoản/cấu hình Apple và Google | Kiểm tra cấu hình provider, callback, signing và quyền truy cập tài khoản phát triển | Nếu thiếu, đánh dấu bài thử provider bị chặn; tiếp tục shared/Go/Anonymous |
 | Thiết bị | Android emulator và iOS simulator trước; ghi riêng kết quả trên máy thật khi có | Không gọi kiểm thử simulator là kiểm thử thiết bị thật |
-| Repo | Một monorepo; mobile/backend/web build độc lập; secret ở cấu hình local/CI | Chưa cần cloud hosting để dựng demo local |
+| Repo | Một monorepo; CoupleRewind/backend/web build độc lập; secret ở cấu hình local/CI | Chưa cần cloud hosting để dựng demo local |
 
 Đây là việc cần kiểm tra lúc triển khai, không phải yêu cầu người dùng gửi secret trong hội thoại. Tên app, tài khoản Firebase và signing chưa được xác nhận trong tài liệu hiện có.
 
@@ -91,7 +91,7 @@ Cập nhật 06/10/2026: Android APK, Go, Next.js, 9 KMP JVM tests và framework
 
 Nếu hết timebox: giảm độ bóng UI/landing, giữ admin ở một màn; bài thử provider có thể mang kết quả bị chặn sang sprint sau. Không bỏ kiểm tra quyền để đổi lấy demo đẹp. Nếu chưa hoàn tất luồng chính Android/iOS, ghi sprint chưa đạt và tính lại phần còn lại.
 
-Lịch định hướng: tuần 1 làm 01–04 và bắt đầu Android/iOS; tuần 2 hoàn tất hai app, bài thử provider, admin và test. Với một người, làm lần lượt theo dependency, không giả định mobile/Go/web được ba người làm đồng thời.
+Lịch định hướng: tuần 1 làm 01–04 và bắt đầu Android/iOS; tuần 2 hoàn tất hai app, bài thử provider, admin và test. Với một người, làm lần lượt theo dependency, không giả định CoupleRewind/Go/web được ba người làm đồng thời.
 
 ## 6. Persistence và API đầu tiên
 

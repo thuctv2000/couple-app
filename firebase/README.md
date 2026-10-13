@@ -41,7 +41,7 @@ go run ./cmd/api
 
 ## Android chạy cùng emulator local
 
-Go API cần `HTTP_ADDR=127.0.0.1:18080` cùng các biến môi trường demo ở trên. Build Android từ thư mục `mobile`:
+Go API cần `HTTP_ADDR=127.0.0.1:18080` cùng các biến môi trường demo ở trên. Build Android từ thư mục `CoupleRewind`:
 
 ```sh
 ./gradlew -Pcouple.emulator=true :androidApp:assembleDebug

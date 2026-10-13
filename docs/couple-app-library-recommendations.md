@@ -144,7 +144,7 @@ Không bổ sung một hệ auth thứ hai, ORM hoặc cơ sở dữ liệu nghi
 Các đường dẫn dưới đây là vị trí dự kiến trong repository khi triển khai, chưa phải source đã tạo.
 
 ```text
-mobile/
+CoupleRewind/
   core/network/                 # Ktor, config engine/token/error mapping
   core/observability/           # Kermit + adapter analytics/crash khi cần
   androidApp/                   # Compose, Android ViewModel, Navigation 3 theo feature

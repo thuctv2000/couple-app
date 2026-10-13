@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AEF1977EEC2DB3A9E80A9C68"
-               BuildableName = "CoupleApp.app"
-               BlueprintName = "CoupleApp"
-               ReferencedContainer = "container:CoupleApp.xcodeproj">
+               BlueprintIdentifier = "16B47D40FA05D737C3DB62D8"
+               BuildableName = "CoupleRewind.app"
+               BlueprintName = "CoupleRewind"
+               ReferencedContainer = "container:CoupleRewind.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AEF1977EEC2DB3A9E80A9C68"
-            BuildableName = "CoupleApp.app"
-            BlueprintName = "CoupleApp"
-            ReferencedContainer = "container:CoupleApp.xcodeproj">
+            BlueprintIdentifier = "16B47D40FA05D737C3DB62D8"
+            BuildableName = "CoupleRewind.app"
+            BlueprintName = "CoupleRewind"
+            ReferencedContainer = "container:CoupleRewind.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AEF1977EEC2DB3A9E80A9C68"
-            BuildableName = "CoupleApp.app"
-            BlueprintName = "CoupleApp"
-            ReferencedContainer = "container:CoupleApp.xcodeproj">
+            BlueprintIdentifier = "16B47D40FA05D737C3DB62D8"
+            BuildableName = "CoupleRewind.app"
+            BlueprintName = "CoupleRewind"
+            ReferencedContainer = "container:CoupleRewind.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,10 +72,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AEF1977EEC2DB3A9E80A9C68"
-            BuildableName = "CoupleApp.app"
-            BlueprintName = "CoupleApp"
-            ReferencedContainer = "container:CoupleApp.xcodeproj">
+            BlueprintIdentifier = "16B47D40FA05D737C3DB62D8"
+            BuildableName = "CoupleRewind.app"
+            BlueprintName = "CoupleRewind"
+            ReferencedContainer = "container:CoupleRewind.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
