@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import dev.coupleapp.shared.CounterConflictView
 import dev.coupleapp.shared.CounterSession
 import dev.coupleapp.shared.CounterViewState
+import dev.coupleapp.android.FirebaseObservability
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.Instant
@@ -133,7 +134,9 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
     if (leave) AlertDialog(onDismissRequest = { leave = false }, title = { Text("Bỏ thay đổi chưa lưu?") }, text = { Text("Thông tin đã lưu trước đó vẫn được giữ.") }, confirmButton = { TextButton(onClick = back) { Text("Bỏ thay đổi") } }, dismissButton = { TextButton(onClick = { leave = false }) { Text("Tiếp tục sửa") } })
 }
 
-@Composable fun AccountScreen(state: CounterViewState, back: () -> Unit, sync: () -> Unit) = Page("Tài khoản", back) {
+@Composable fun AccountScreen(state: CounterViewState, back: () -> Unit, sync: () -> Unit, observability: FirebaseObservability) = Page("Tài khoản", back) {
+    var analyticsEnabled by rememberSaveable { mutableStateOf(observability.analyticsEnabled) }
+    var crashReportsEnabled by rememberSaveable { mutableStateOf(observability.crashReportsEnabled) }
     Text(state.displayName.ifBlank { "Không gian của bạn" }, style = MaterialTheme.typography.titleLarge)
     Text("Đang dùng trên thiết bị")
     Text("Bạn chưa cần đăng nhập để lưu dữ liệu trên máy.")
@@ -141,6 +144,39 @@ private fun Page(title: String, back: (() -> Unit)? = null, content: @Composable
     Text(syncText(state.syncState))
     OutlinedButton(onClick = sync) { Text("Xem trạng thái đồng bộ") }
     Text("Dữ liệu chưa đồng bộ có thể mất khi xóa ứng dụng.", style = MaterialTheme.typography.bodySmall)
+    HorizontalDivider()
+    Text("Chẩn đoán và cải thiện", style = MaterialTheme.typography.titleMedium)
+    if (!observability.available) {
+        Text("Bản local chưa kết nối Firebase Analytics/Crashlytics. Không có dữ liệu chẩn đoán nào được gửi.")
+    }
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.weight(1f)) {
+            Text("Chia sẻ dữ liệu sử dụng")
+            Text("Chỉ sự kiện kỹ thuật đã giới hạn; không gồm tên, ngày, UID hay nội dung.", style = MaterialTheme.typography.bodySmall)
+        }
+        Switch(
+            checked = analyticsEnabled,
+            onCheckedChange = { value ->
+                observability.setAnalyticsEnabled(value)
+                analyticsEnabled = observability.analyticsEnabled
+            },
+            enabled = observability.available,
+        )
+    }
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.weight(1f)) {
+            Text("Gửi báo cáo lỗi")
+            Text("Gửi crash kỹ thuật để sửa lỗi; mặc định tắt.", style = MaterialTheme.typography.bodySmall)
+        }
+        Switch(
+            checked = crashReportsEnabled,
+            onCheckedChange = { value ->
+                observability.setCrashReportsEnabled(value)
+                crashReportsEnabled = observability.crashReportsEnabled
+            },
+            enabled = observability.available,
+        )
+    }
 }
 
 @Composable fun SyncScreen(state: CounterViewState, back: () -> Unit, retry: () -> Unit, session: CounterSession) = Page("Đồng bộ dữ liệu", back) {

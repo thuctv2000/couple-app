@@ -27,7 +27,8 @@ class MainActivity : ComponentActivity() {
                 onBackground = Color(0xFF302925), onSurface = Color(0xFF302925),
                 primaryContainer = Color(0xFFF3DEDA), onPrimaryContainer = Color(0xFF542F33),
             )
-            MaterialTheme(colorScheme = colors) { AppNavigation((application as CoupleApplication).counterSession) }
+            val app = application as CoupleApplication
+            MaterialTheme(colorScheme = colors) { AppNavigation(app.counterSession, app.observability) }
         }
     }
 }

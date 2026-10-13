@@ -11,6 +11,8 @@
 		475029EC23EBAFC3B66E6FE7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8FA6E25333F8F705E884F162 /* FirebaseAuth */; };
 		69B9E988B04A781FBA15FA44 /* CoupleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7290CADA3D97627899E7C0 /* CoupleApp.swift */; };
 		6A0ACD12D5F724765EAA2101 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 679292BF0F92AC40254E37D6 /* FirebaseCore */; };
+		B11111111111111111111111 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = A11111111111111111111111 /* FirebaseAnalyticsCore */; };
+		B22222222222222222222222 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = A22222222222222222222222 /* FirebaseCrashlytics */; };
 		85D71E1AE7581DE4F6BD570C /* FirebaseCounterIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33AAD836BE7F02E97E6B44F1 /* FirebaseCounterIdentity.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +30,8 @@
 			files = (
 				475029EC23EBAFC3B66E6FE7 /* FirebaseAuth in Frameworks */,
 				6A0ACD12D5F724765EAA2101 /* FirebaseCore in Frameworks */,
+				B11111111111111111111111 /* FirebaseAnalyticsCore in Frameworks */,
+				B22222222222222222222222 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +90,7 @@
 				D937F618C424587F48AE1CE9 /* Build shared Kotlin framework */,
 				72D1831F4239A26A36CD79F6 /* Sources */,
 				4BD8536AC5E8AA837718BC8B /* Frameworks */,
+				C33333333333333333333333 /* Upload Crashlytics symbols when configured */,
 			);
 			buildRules = (
 			);
@@ -95,6 +100,8 @@
 			packageProductDependencies = (
 				8FA6E25333F8F705E884F162 /* FirebaseAuth */,
 				679292BF0F92AC40254E37D6 /* FirebaseCore */,
+				A11111111111111111111111 /* FirebaseAnalyticsCore */,
+				A22222222222222222222222 /* FirebaseCrashlytics */,
 			);
 			productName = CoupleApp;
 			productReference = 6103859CF1762C11A3775B99 /* CoupleApp.app */;
@@ -134,6 +141,25 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C33333333333333333333333 /* Upload Crashlytics symbols when configured */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Crashlytics symbols when configured";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "CONFIG=\"$PROJECT_DIR/Config/GoogleService-Info.plist\"\nRUN_SCRIPT=\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nif [ -f \"$CONFIG\" ] && [ -x \"$RUN_SCRIPT\" ]; then\n  \"$RUN_SCRIPT\" -gsp \"$CONFIG\"\nfi\n";
+		};
 		D937F618C424587F48AE1CE9 /* Build shared Kotlin framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -376,6 +402,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		A11111111111111111111111 /* FirebaseAnalyticsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsCore;
+		};
+		A22222222222222222222222 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 34D825D3948B8A4F8FEA200F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

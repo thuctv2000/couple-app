@@ -160,7 +160,7 @@ Cập nhật 11/10/2026. Nhánh `feat/offline-first-phase-01`.
 - Thêm middleware quanh Go router: UUID do server tạo trong `X-Request-ID`, route pattern, method đã giới hạn, status và duration; JSON stdout dùng logger sẵn có. Không lấy request ID do caller gửi.
 - Không ghi URL/query/body/header/IP/UID. Tests cài dữ liệu nhạy cảm giả trong từng vị trí và xác nhận không lọt log; kiểm tra status đầu tiên và cấp INFO/WARN/ERROR.
 - `go test -race ./...` và `go vet ./...` qua. Emulator integration không bật trong lượt này; không thay thế bằng chứng integration trước. [Kết quả focused tests](verification/go-access-log-tests.txt), [quy ước và giới hạn](backend-observability.md).
-- Chưa có metrics/tracing, panic reporting, admin audit, mobile crash/analytics hay retention cấu hình production. Không tạo dịch vụ/project mới.
+- Tại checkpoint này chưa có metrics/tracing, panic reporting, admin audit, mobile crash/analytics hay retention cấu hình production. Mobile analytics/crash opt-in được bổ sung ở checkpoint riêng bên dưới. Không tạo dịch vụ/project mới.
 - Build iOS session 88475 vẫn live tại kiểm tra cuối; artifacts tăng lên 416 MB, chưa có kết luận build. Tiếp tục quan sát cùng tiến trình.
 
 ## Admin server gate — 12/10/2026
@@ -197,3 +197,12 @@ Cập nhật 11/10/2026. Nhánh `feat/offline-first-phase-01`.
 - Integration Next.js → Go → Emulator đạt, gồm body quá giới hạn, sai Origin, metadata thành công, audit được ghi và cookie cũ bị từ chối sau thu hồi role. [Kết quả web](verification/next-admin-emulator-tests.txt).
 - `go test -race ./...`, `go vet ./...`, web tests, TypeScript, production build và OpenAPI YAML đều đạt. Chỉ dùng `demo-couple-app` cục bộ; không tạo hay sửa Firebase cloud project.
 - Chưa có cấp/thu hồi role qua UI, sửa/xóa user, xem nội dung riêng tư hay export. Google popup cần cấu hình web app thuộc project hiện có; không tự tạo project để kiểm thử.
+
+## Mobile analytics và crash opt-in — kiểm chứng 13/10/2026
+
+- Shared use case phát 7 event sản phẩm tại đúng điểm save/sync/conflict. Tên event và thuộc tính được đóng trong allowlist; không có tên người dùng, ngày yêu, múi giờ, UID, token, payload hoặc lỗi dạng tự do. Analytics lỗi không làm thay đổi kết quả thao tác chính.
+- Android và iOS có hai công tắc độc lập cho analytics và crash report. Cả hai mặc định tắt từ manifest/Info.plist, tiếp tục bị khóa khi thiếu cấu hình Firebase hiện hữu hoặc chạy emulator local. Android cũng tắt thu thập advertising ID; iOS dùng `FirebaseAnalyticsCore` và tắt IDFV collection.
+- JVM tests qua cho event save, retry/ACK đúng một lần, phát hiện và giải quyết conflict, lọc dữ liệu riêng tư và collector bị lỗi. Android APK, KMP iOS framework và native simulator tests đều qua.
+- Swift Package Manager resolve Firebase 12.19.2 thành công; app SwiftUI build bằng **Xcode 27.0 (27A266a)** cho iPhone 17/iOS 27 Simulator và khởi động được với `COUPLE_FIREBASE_EMULATOR=1`. Chế độ này không có đường gửi analytics/crash lên cloud.
+- Web privacy page mô tả đúng cơ chế opt-in. Web tests, TypeScript và production build qua. [Quy ước và giới hạn](mobile-observability.md).
+- Chưa kiểm chứng Firebase dashboard, event delivery, crash thật hoặc dSYM với cloud. Các bước đó chỉ thực hiện khi chủ sở hữu cung cấp cấu hình của một project đã có. Không tạo project mới trên tài khoản.

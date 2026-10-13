@@ -9,6 +9,7 @@ Monorepo khởi đầu: logic KMP dùng chung, UI Android Compose và iOS SwiftU
 - Go có `/healthz`, GET/PUT `/v1/me/counter`, admin session gate và metadata support endpoint có audit. Next.js có landing, trợ giúp, trang thông tin dữ liệu và admin read-only được bảo vệ.
 - Đã thêm Room KMP: lưu bộ đếm và outbox cùng transaction, đọc lại khi mở app. Android đã kiểm chứng lưu offline, sync Anonymous, pull, hai lựa chọn conflict và chặn editor cũ ghi đè dữ liệu mới. APK và framework KMP iOS build thành công; app SwiftUI đã build/cài/khởi động trên iOS Simulator; 17 native tests qua, gồm Room persistence. Thao tác UI và sync iOS end-to-end chưa kiểm chứng. Xem [bằng chứng triển khai](docs/phase-01-progress.md).
 - Android debug đã kiểm chứng Firebase Anonymous và gửi outbox tới Go/Firestore Emulator, gồm sửa offline rồi mở lại có mạng. Mặc định chưa cấu hình vẫn local-only; iOS Auth end-to-end, liên kết Google/Apple và cloud thật chưa hoàn tất. Admin session/metadata/audit đã kiểm chứng bằng emulator, còn thiếu popup Google với cấu hình project hiện có. Xem [cách bật kiểm thử local](firebase/README.md).
+- Mobile analytics và crash reporting dùng công tắc riêng, mặc định tắt, không hoạt động khi chạy emulator local hoặc thiếu cấu hình Firebase từ project có sẵn. Event chỉ chứa các trường đã cho phép; xem [quy ước observability](docs/mobile-observability.md).
 - `CoupleApp`, `dev.coupleapp.local` và Go module `example.com/coupleapp/backend` là định danh local tạm thời. Chốt định danh thật trước khi đăng ký Firebase/OAuth/signing.
 
 Kết quả kiểm chứng thực tế được ghi trong [Báo cáo khởi tạo](docs/bootstrap-status.md). Cấu hình build không đồng nghĩa đã chạy thành công trên thiết bị.
@@ -93,6 +94,7 @@ Theo quyết định offline-first: database local → bộ đếm lưu/mở l�
 Tài liệu ghi lại nghiên cứu và quyết định tại thời điểm lập kế hoạch; tính năng đề xuất không đồng nghĩa đã triển khai. Trạng thái source thực tế nằm trong [báo cáo khởi tạo](docs/bootstrap-status.md).
 
 - [Tính năng, luồng người dùng, log và analytics](docs/couple-app-product-operations-notes.md)
+- [Mobile analytics và crash reporting](docs/mobile-observability.md)
 - [Kế hoạch phát triển](docs/couple-app-development-plan.md)
 - [Research Clean Architecture theo nền tảng](docs/couple-app-clean-architecture.md)
 - [Research và đề xuất thư viện](docs/couple-app-library-recommendations.md)

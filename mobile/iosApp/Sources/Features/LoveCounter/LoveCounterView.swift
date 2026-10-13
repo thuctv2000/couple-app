@@ -5,8 +5,21 @@ import Combine
 @MainActor
 final class CounterModel: ObservableObject {
     @Published var state: CounterViewState?
-    let session = FirebaseCounterIdentity.makeSession()
+    @Published private(set) var analyticsAvailable: Bool
+    @Published private(set) var analyticsEnabled: Bool
+    @Published private(set) var crashReportsEnabled: Bool
+    let session: CounterSession
+    private let observability: FirebaseObservability
     private var observation: CounterObservation?
+
+    init() {
+        let observability = FirebaseObservability(emulator: FirebaseCounterIdentity.usesLocalEmulator)
+        self.observability = observability
+        analyticsAvailable = observability.available
+        analyticsEnabled = observability.analyticsEnabled
+        crashReportsEnabled = observability.crashReportsEnabled
+        session = FirebaseCounterIdentity.makeSession(analytics: observability)
+    }
 
     func start() {
         guard observation == nil else { return }
@@ -17,6 +30,14 @@ final class CounterModel: ObservableObject {
     }
     func stop() { observation?.cancel(); observation = nil }
     func retry() { stop(); state = nil; start() }
+    func setAnalyticsEnabled(_ enabled: Bool) {
+        observability.setAnalyticsEnabled(enabled)
+        analyticsEnabled = observability.analyticsEnabled
+    }
+    func setCrashReportsEnabled(_ enabled: Bool) {
+        observability.setCrashReportsEnabled(enabled)
+        crashReportsEnabled = observability.crashReportsEnabled
+    }
 }
 
 private enum CounterRoute: Hashable { case setup, edit, account, sync }
@@ -108,6 +129,21 @@ struct LoveCounterView: View {
             Section("Dữ liệu của bạn") {
                 Button("Xem trạng thái đồng bộ") { path.append(.sync) }
                 Text("Dữ liệu chưa đồng bộ có thể mất khi xóa ứng dụng.").font(.footnote)
+            }
+            Section("Chẩn đoán và cải thiện") {
+                if !model.analyticsAvailable {
+                    Text("Bản local chưa kết nối Firebase Analytics/Crashlytics. Không có dữ liệu chẩn đoán nào được gửi.")
+                }
+                Toggle("Chia sẻ dữ liệu sử dụng", isOn: Binding(
+                    get: { model.analyticsEnabled },
+                    set: { model.setAnalyticsEnabled($0) }
+                )).disabled(!model.analyticsAvailable)
+                Text("Chỉ sự kiện kỹ thuật đã giới hạn; không gồm tên, ngày, UID hay nội dung.").font(.footnote)
+                Toggle("Gửi báo cáo lỗi", isOn: Binding(
+                    get: { model.crashReportsEnabled },
+                    set: { model.setCrashReportsEnabled($0) }
+                )).disabled(!model.analyticsAvailable)
+                Text("Mặc định tắt. Khi bật, Firebase có thể gửi báo cáo crash đã lưu cục bộ từ trước.").font(.footnote)
             }
         }.navigationTitle("Tài khoản")
     }

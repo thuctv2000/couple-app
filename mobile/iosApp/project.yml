@@ -23,12 +23,19 @@ targets:
         product: FirebaseAuth
       - package: Firebase
         product: FirebaseCore
+      - package: Firebase
+        product: FirebaseAnalyticsCore
+      - package: Firebase
+        product: FirebaseCrashlytics
     info:
       path: Config/Info.plist
       properties:
         UILaunchScreen: {}
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
+        FIREBASE_ANALYTICS_COLLECTION_ENABLED: false
+        GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED: false
+        FirebaseCrashlyticsCollectionEnabled: false
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true
     settings:
@@ -42,6 +49,15 @@ targets:
         script: |
           cd "$SRCROOT/.."
           "${COUPLE_GRADLE_EXECUTABLE:-./gradlew}" :shared:embedAndSignAppleFrameworkForXcode -Pkotlin.compiler.execution.strategy=in-process
+        basedOnDependencyAnalysis: false
+    postBuildScripts:
+      - name: Upload Crashlytics symbols when configured
+        script: |
+          CONFIG="$PROJECT_DIR/Config/GoogleService-Info.plist"
+          RUN_SCRIPT="${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run"
+          if [ -f "$CONFIG" ] && [ -x "$RUN_SCRIPT" ]; then
+            "$RUN_SCRIPT" -gsp "$CONFIG"
+          fi
         basedOnDependencyAnalysis: false
 schemes:
   CoupleApp:

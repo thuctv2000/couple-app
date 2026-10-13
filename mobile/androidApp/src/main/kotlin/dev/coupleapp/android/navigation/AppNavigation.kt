@@ -6,6 +6,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import dev.coupleapp.android.features.lovecounter.*
+import dev.coupleapp.android.FirebaseObservability
 import dev.coupleapp.shared.CounterSession
 import dev.coupleapp.shared.CounterViewState
 import kotlinx.serialization.Serializable
@@ -18,7 +19,7 @@ import kotlinx.serialization.Serializable
 @Serializable data object Sync : NavKey
 
 @Composable
-fun AppNavigation(session: CounterSession) {
+fun AppNavigation(session: CounterSession, observability: FirebaseObservability) {
     var state by remember { mutableStateOf(CounterViewState()) }
     var observationAttempt by remember { mutableIntStateOf(0) }
     DisposableEffect(session, observationAttempt) {
@@ -45,7 +46,7 @@ fun AppNavigation(session: CounterSession) {
             entry<ChooseDate> { EditCounterScreen(state, session, true, { back() }, { home() }) }
             entry<Home> { CounterHomeScreen(state, { backStack.add(Edit) }, { backStack.add(Account) }, { backStack.add(Sync) }) }
             entry<Edit> { EditCounterScreen(state, session, false, { back() }, { home() }) }
-            entry<Account> { AccountScreen(state, { back() }, { backStack.add(Sync) }) }
+            entry<Account> { AccountScreen(state, { back() }, { backStack.add(Sync) }, observability) }
             entry<Sync> { SyncScreen(state, { back() }, session::requestSync, session) }
         },
     )

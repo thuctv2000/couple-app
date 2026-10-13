@@ -1,6 +1,7 @@
 package dev.coupleapp.shared
 
 import dev.coupleapp.lovecounter.domain.*
+import dev.coupleapp.shared.observability.ProductAnalytics
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.*
@@ -11,6 +12,7 @@ import kotlin.test.*
 class CounterSessionRetryTest {
     private class Fixture {
         val pending = MutableStateFlow(1)
+        val analyticsEvents = mutableListOf<String>()
         var calls = 0
         private val op = PreparedCounterOperation("operation", "uid", 0, 1, 1, CounterDraft("Name", "", LocalDate(2020, 1, 1), "UTC"))
         private val repository = object : CounterRepository {
@@ -34,7 +36,12 @@ class CounterSessionRetryTest {
                 return if (calls == 1) CounterRemoteResult.RetryLater else CounterRemoteResult.Accepted(op.operationId, 1, op.payload)
             }
         }
-        fun session() = CounterSession(repository, {}, SyncCounter(queue, identity, remote))
+        fun session() = CounterSession(
+            repository,
+            {},
+            SyncCounter(queue, identity, remote),
+            analytics = ProductAnalytics { analyticsEvents += it.name },
+        )
     }
 
     @Test fun retriesWhileForegroundWithoutAnotherUserAction() = runTest {
@@ -48,6 +55,7 @@ class CounterSessionRetryTest {
             advanceTimeBy(60_001); runCurrent()
             assertEquals(2, fixture.calls)
             assertEquals(0, fixture.pending.value)
+            assertEquals(listOf("sync_confirmed"), fixture.analyticsEvents)
         } finally { session.close(); Dispatchers.resetMain() }
     }
 
@@ -65,6 +73,7 @@ class CounterSessionRetryTest {
             session.refresh(); runCurrent()
             assertEquals(2, fixture.calls)
             assertEquals(0, fixture.pending.value)
+            assertEquals(listOf("sync_confirmed"), fixture.analyticsEvents)
         } finally { session.close(); Dispatchers.resetMain() }
     }
 }

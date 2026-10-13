@@ -1,7 +1,48 @@
 import Foundation
 @preconcurrency import FirebaseAuth
+@preconcurrency import FirebaseAnalytics
+@preconcurrency import FirebaseCrashlytics
 @preconcurrency import FirebaseCore
 @preconcurrency import CoupleShared
+
+@MainActor
+final class FirebaseObservability: NSObject, @preconcurrency ProductAnalytics {
+    private let defaults = UserDefaults.standard
+    let available: Bool
+    private(set) var analyticsEnabled: Bool
+    private(set) var crashReportsEnabled: Bool
+
+    init(emulator: Bool) {
+        available = !emulator && FirebaseApp.app() != nil
+        analyticsEnabled = available && defaults.bool(forKey: "analytics_enabled")
+        crashReportsEnabled = available && defaults.bool(forKey: "crash_reports_enabled")
+        super.init()
+        guard available else { return }
+        Analytics.setAnalyticsCollectionEnabled(analyticsEnabled)
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(crashReportsEnabled)
+    }
+
+    func setAnalyticsEnabled(_ enabled: Bool) {
+        analyticsEnabled = available && enabled
+        defaults.set(analyticsEnabled, forKey: "analytics_enabled")
+        if available { Analytics.setAnalyticsCollectionEnabled(analyticsEnabled) }
+    }
+
+    func setCrashReportsEnabled(_ enabled: Bool) {
+        crashReportsEnabled = available && enabled
+        defaults.set(crashReportsEnabled, forKey: "crash_reports_enabled")
+        if available { Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(crashReportsEnabled) }
+    }
+
+    func track(event: ProductAnalyticsEvent) {
+        guard analyticsEnabled else { return }
+        var parameters: [String: String] = [:]
+        for key in ["event_id", "schema_version", "error_code", "choice"] {
+            if let value = event.parameterValue(name: key) { parameters[key] = value }
+        }
+        Analytics.logEvent(event.name, parameters: parameters)
+    }
+}
 
 /// Native SDK owner. Shared session calls this bridge from its main dispatcher.
 @MainActor
@@ -31,7 +72,7 @@ final class FirebaseCounterIdentity: NSObject, @preconcurrency NativeCounterIden
         }
     }
 
-    static func makeSession() -> CounterSession {
+    static func makeSession(analytics: ProductAnalytics) -> CounterSession {
         #if DEBUG && targetEnvironment(simulator)
         if ProcessInfo.processInfo.environment["COUPLE_FIREBASE_EMULATOR"] == "1" {
             let name = "couple-demo-emulator"
@@ -43,10 +84,18 @@ final class FirebaseCounterIdentity: NSObject, @preconcurrency NativeCounterIden
             }
             if let app = FirebaseApp.app(name: name) {
                 let identity = FirebaseCounterIdentity(app: app, emulator: true)
-                return CounterSessionFactoryKt.createSyncedCounterSession(identity: identity, apiBaseUrl: "http://127.0.0.1:18080", allowLocalHttp: true)
+                return CounterSessionFactoryKt.createSyncedCounterSession(identity: identity, apiBaseUrl: "http://127.0.0.1:18080", allowLocalHttp: true, analytics: analytics)
             }
         }
         #endif
-        return CounterSessionFactoryKt.createCounterSession()
+        return CounterSessionFactoryKt.createCounterSession(analytics: analytics)
+    }
+
+    static var usesLocalEmulator: Bool {
+        #if DEBUG && targetEnvironment(simulator)
+        return ProcessInfo.processInfo.environment["COUPLE_FIREBASE_EMULATOR"] == "1"
+        #else
+        return false
+        #endif
     }
 }

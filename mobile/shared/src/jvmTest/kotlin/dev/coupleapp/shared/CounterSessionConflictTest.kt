@@ -1,6 +1,7 @@
 package dev.coupleapp.shared
 
 import dev.coupleapp.lovecounter.domain.*
+import dev.coupleapp.shared.observability.ProductAnalytics
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.*
@@ -18,6 +19,7 @@ class CounterSessionConflictTest {
         var reads = 0
         var sends = 0
         var resolved = false
+        val analyticsEvents = mutableListOf<Pair<String, Map<String, String>>>()
         val repository = object : CounterRepository {
             override fun observeSettings() = settings
             override fun observePendingCount() = pending
@@ -62,7 +64,14 @@ class CounterSessionConflictTest {
                 return if (resolved) CounterRemoteResult.Accepted(operation.operationId, 6, draft) else CounterRemoteResult.Conflict
             }
         }
-        fun session() = CounterSession(repository, {}, SyncCounter(queue, identity, remote), store, LoadCounterConflict(identity, reader, store))
+        fun session() = CounterSession(
+            repository,
+            {},
+            SyncCounter(queue, identity, remote),
+            store,
+            LoadCounterConflict(identity, reader, store),
+            analytics = ProductAnalytics { analyticsEvents += it.name to it.parameters },
+        )
     }
 
     @Test fun conflictLoadsComparisonAndServerChoiceDoesNotSendLocalPayload() = runTest {
@@ -83,6 +92,8 @@ class CounterSessionConflictTest {
             assertNull(state?.conflict)
             assertEquals(0, f.pending.value)
             assertEquals(1, f.sends)
+            assertEquals(listOf("sync_conflict_detected", "sync_conflict_resolved"), f.analyticsEvents.map { it.first })
+            assertEquals("server", f.analyticsEvents.last().second["choice"])
         } finally { observation.cancel(); session.close(); Dispatchers.resetMain() }
     }
 
@@ -94,6 +105,8 @@ class CounterSessionConflictTest {
             session.resolveConflict(1, 5, true) { assertNull(it.errorCode) }; runCurrent()
             assertEquals(2, f.sends)
             assertEquals(0, f.pending.value)
+            assertEquals(listOf("sync_conflict_detected", "sync_conflict_resolved", "sync_confirmed"), f.analyticsEvents.map { it.first })
+            assertEquals("local", f.analyticsEvents[1].second["choice"])
         } finally { session.close(); Dispatchers.resetMain() }
     }
 
