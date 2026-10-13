@@ -28,12 +28,7 @@ Yêu cầu JDK 17+, Android SDK Platform 37 và Build Tools 36.1.0. Khai báo SD
 
 Mở `iosApp/CoupleRewind.xcodeproj` bằng Xcode 27, chọn scheme **CoupleRewind** và iPhone Simulator rồi Run. Build phase tạo framework `CoupleShared` từ Gradle. Cần JDK/Gradle trong môi trường Xcode.
 
-`iosApp/project.yml` là nguồn cấu hình XcodeGen. Sau khi sửa cấu hình:
-
-```sh
-cd iosApp
-xcodegen generate
-```
+`CoupleRewind.xcodeproj` là project Xcode thường: thêm file, Swift package và build setting trực tiếp trong Xcode, không dùng công cụ sinh project.
 
 ## Định danh và dịch vụ
 

@@ -50,12 +50,7 @@ cd CoupleRewind
 
 Mở project `CoupleRewind` bằng Android Studio. iOS: mở `CoupleRewind/iosApp/CoupleRewind.xcodeproj`, chọn simulator và Run. Build phase của Xcode tạo `CoupleShared` từ KMP; Gradle/JDK phải truy cập được trong môi trường Xcode. Thiết bị thật cần signing/team riêng.
 
-Project Xcode đã được sinh và đưa vào repo. Build script mặc định dùng wrapper; khi kiểm chứng trên máy này có thể đặt `COUPLE_GRADLE_EXECUTABLE` tới executable Gradle 9.4.1 có sẵn để dùng cùng phiên bản. Nếu sửa `project.yml`, dùng XcodeGen để sinh lại:
-
-```sh
-cd CoupleRewind/iosApp
-xcodegen generate
-```
+`CoupleRewind.xcodeproj` là project Xcode thường, chỉnh trực tiếp trong Xcode (thêm file, Swift package, build setting); không dùng công cụ sinh project. Build script mặc định dùng wrapper; khi kiểm chứng trên máy này có thể đặt `COUPLE_GRADLE_EXECUTABLE` tới executable Gradle 9.4.1 có sẵn để dùng cùng phiên bản.
 
 Android min SDK 26, iOS deployment target 17 là mặc định kỹ thuật của prototype, chưa phải quyết định phạm vi thiết bị phát hành. SwiftUI NavigationStack đi cùng SDK Apple; Navigation 3 chỉ nằm ở Android host.
 

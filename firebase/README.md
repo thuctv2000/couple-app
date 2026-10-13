@@ -53,6 +53,6 @@ Android emulator truy cập máy host qua `10.0.2.2`: Auth cổng 19099, Go cổ
 
 ## iOS Simulator — cấu hình đang kiểm chứng
 
-Project XcodeGen có FirebaseCore/Auth qua SPM 12.19.2. App SwiftUI với adapter Firebase đã build/cài/khởi động trên iOS Simulator ngày 12/10/2026; native persistence tests qua. Anonymous/sync qua các màn iOS chưa có bằng chứng end-to-end. Sau khi resolve package, đặt biến môi trường scheme `COUPLE_FIREBASE_EMULATOR=1` cho Debug Simulator để dùng Auth `127.0.0.1:19099`, Go `127.0.0.1:18080`. Không có biến này thì app local-only; release bỏ qua cấu hình emulator.
+Project Xcode có FirebaseCore/Auth qua SPM 12.19.2. App SwiftUI với adapter Firebase đã build/cài/khởi động trên iOS Simulator ngày 12/10/2026; native persistence tests qua. Anonymous/sync qua các màn iOS chưa có bằng chứng end-to-end. Sau khi resolve package, đặt biến môi trường scheme `COUPLE_FIREBASE_EMULATOR=1` cho Debug Simulator để dùng Auth `127.0.0.1:19099`, Go `127.0.0.1:18080`. Không có biến này thì app local-only; release bỏ qua cấu hình emulator.
 
 Tại lần đối chiếu ngày 11/10/2026, Firebase 13 có cảnh báo chưa có Google Sign-In SPM tương thích trong [release notes](https://firebase.google.com/support/release-notes/ios); vì Google login thuộc phạm vi dự án nên hiện pin 12.19.2. Không thêm Firebase Analytics hay sản phẩm không cần thiết.
